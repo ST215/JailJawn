@@ -6,8 +6,7 @@ r = requests.get(url)
 
 soup = BeautifulSoup(r.content)
 
-
-prison_data = soup.find_all("td")
+prison_data = soup.find_all("tr")
 
 for item in prison_data:
-	print item.text
+    print item.get_text()
