@@ -4,7 +4,7 @@ import requests
 class Facility:
     def __init__(self, facilityName, adultMaleCount, adultFemaleCount, juvenileMaleCount, juvenileFemaleCount,
                  inCountOutCountMale, inCountOutCountFemale, workersMale, workersFemale, furloughMale,
-                 furloughFemale, openWardMale, openWardFemale):
+                 furloughFemale, openWardMale, openWardFemale, emergTripsMale, emergTripsFemale):
 
         self.facilityName =  facilityName
         self.adultMaleCount =  adultMaleCount
@@ -19,6 +19,8 @@ class Facility:
         self.FurloughFemale =  furloughFemale
         self.openWardMale =  openWardMale
         self.openWardFemale =  openWardFemale
+        self.emergTripsMale = emergTripsMale
+        self.emergTripsFemale = emergTripsFemale
 
 
 page = requests.get('http://www.phila.gov/prisons/page.htm')
@@ -36,12 +38,14 @@ f = Facility(tree.xpath('//tr[14]/td[1]/text()'),
                 tree.xpath('//tr[14]/td[10]/text()'),
                 tree.xpath('//tr[14]/td[11]/text()'),
                 tree.xpath('//tr[14]/td[12]/text()'),
-                tree.xpath('//tr[14]/td[13]/text()')
+                tree.xpath('//tr[14]/td[13]/text()'),
+                tree.xpath('//tr[14]/td[14]/text()'),
+                tree.xpath('//tr[14]/td[15]/text()')
                 )
 
 
 print(f.facilityName, f.adultMaleCount, f.adultFemaleCount, f.juvenileMaleCount, f.juvenileFemaleCount,
       f.inCountOutCountMale, f.inCountOutCountFemale, f.workersMale, f.workersFemale, f.FurloughMale, f.FurloughFemale,
-      f.openWardMale, f.openWardFemale)
+      f.openWardMale, f.openWardFemale, f.emergTripsMale, f.emergTripsFemale)
 
 
