@@ -2,12 +2,16 @@ from lxml import html
 import requests
 
 class Facility:
-    def __init__(self, facilityName, adultMaleCount, adultFemaleCount, juvenileMaleCount, juvenileFemaleCount):
+    def __init__(self, facilityName, adultMaleCount, adultFemaleCount, juvenileMaleCount, juvenileFemaleCount,
+                 inCountOutCountMale, inCountOutCountFemale):
+
         self.facilityName =  facilityName
         self.adultMaleCount =  adultMaleCount
         self.adultFemaleCount =  adultFemaleCount
         self.juvenileMaleCount =  juvenileMaleCount
         self.juvenileFemaleCount =  juvenileFemaleCount
+        self.inCountOutCountMale =  inCountOutCountMale
+        self.inCountOutCountFemale =  inCountOutCountFemale
 
 
 page = requests.get('http://www.phila.gov/prisons/page.htm')
@@ -17,10 +21,13 @@ f = Facility(tree.xpath('//tr[14]/td[1]/text()'),
                 tree.xpath('//tr[14]/td[2]/text()'),
                 tree.xpath('//tr[14]/td[3]/text()'),
                 tree.xpath('//tr[14]/td[4]/text()'),
-                tree.xpath('//tr[14]/td[5]/text()')
+                tree.xpath('//tr[14]/td[5]/text()'),
+                tree.xpath('//tr[14]/td[6]/text()'),
+                tree.xpath('//tr[14]/td[7]/text()')
                 )
 
 
-print(f.facilityName, f.adultMaleCount, f.adultFemaleCount, f.juvenileMaleCount, f.juvenileFemaleCount)
+print(f.facilityName, f.adultMaleCount, f.adultFemaleCount, f.juvenileMaleCount, f.juvenileFemaleCount,
+      f.inCountOutCountMale, f.inCountOutCountFemale)
 
 
