@@ -27,9 +27,13 @@ class Facility:
 page = requests.get('http://www.phila.gov/prisons/page.htm')
 tree = html.fromstring(page.content)
 
-f = Facility(tree.xpath('//tr[14]/td[1]/text()'),
-                tree.xpath('//tr[14]/td[2]/text()'),
-                tree.xpath('//tr[14]/td[3]/text()'),
+
+def getxpath(columnNumber):
+        return tree.xpath('//tr[14]/td[%i]/text()' % (columnNumber))
+
+f = Facility(getxpath(1),
+                getxpath(2),
+                getxpath(3),
                 tree.xpath('//tr[14]/td[4]/text()'),
                 tree.xpath('//tr[14]/td[5]/text()'),
                 tree.xpath('//tr[14]/td[6]/text()'),
@@ -43,7 +47,6 @@ f = Facility(tree.xpath('//tr[14]/td[1]/text()'),
                 tree.xpath('//tr[14]/td[14]/text()'),
                 tree.xpath('//tr[14]/td[15]/text()')
                 )
-
 
 print(f.facilityName, f.adultMaleCount, f.adultFemaleCount, f.juvenileMaleCount, f.juvenileFemaleCount,
       f.inCountOutCountMale, f.inCountOutCountFemale, f.workersMale, f.workersFemale, f.furloughMale, f.furloughFemale,
