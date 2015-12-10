@@ -35,7 +35,7 @@ f = Facility(getxpath(1),
                 getxpath(2),
                 getxpath(3),
                 getxpath(4),
-                getxpath(5),git 
+                getxpath(5),
                 getxpath(6),
                 getxpath(7),
                 getxpath(8),
