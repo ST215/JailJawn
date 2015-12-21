@@ -24,3 +24,23 @@ Python Requests (http://docs.python-requests.org/en/latest/)
 
 ## Tutorials Used:
 Scrape Websites with Python + Beautiful Soup 4 + Requests -- Coding with Python (https://www.youtube.com/watch?v=3xQTJi2tqgk)
+
+##Steps to run on Windows
+-Download Python
+	1. http://docs.python-requests.org/en/latest/user/install/#install
+-Set up Python Path
+	1. Open Control Panel
+	2. Go To Security and Systems
+	3. Go to System
+	4. Open Advanced System Settings
+	5. Go to the "Advanced" tab and open Environmental Variables
+	6. Scoll down to "Path" in System Variables and then double-click
+	7. Add the local address of your Python library to the Variable Value field (For example: C:\Python27)
+		-If there are any other paths in the field then seperate them with a semicolon (For example C:\Java_lib;C:\Python27)
+-Download Requests
+	1. clone git://github.com/kennethreitz/requests.git
+	2. Open terminal and run python setup.py install
+-Download lxml
+	1. https://pypi.python.org/pypi/lxml/3.2.3
+
+
