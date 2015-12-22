@@ -1,54 +1,47 @@
-from lxml import html
 import requests
+from lxml import html
 
+from Facility import Facility
 
-class Facility:
-    def __init__(self, facilityName, adultMaleCount, adultFemaleCount, juvenileMaleCount, juvenileFemaleCount,
-                 inCountOutCountMale, inCountOutCountFemale, workersMale, workersFemale, furloughMale,
-                 furloughFemale, openWardMale, openWardFemale, emergTripsMale, emergTripsFemale):
-
-        self.facilityName = facilityName
-        self.adultMaleCount = adultMaleCount
-        self.adultFemaleCount = adultFemaleCount
-        self.juvenileMaleCount = juvenileMaleCount
-        self.juvenileFemaleCount = juvenileFemaleCount
-        self.inCountOutCountMale = inCountOutCountMale
-        self.inCountOutCountFemale = inCountOutCountFemale
-        self.workersMale = workersMale
-        self.workersFemale = workersFemale
-        self.furloughMale = furloughMale
-        self.furloughFemale = furloughFemale
-        self.openWardMale = openWardMale
-        self.openWardFemale = openWardFemale
-        self.emergTripsMale = emergTripsMale
-        self.emergTripsFemale = emergTripsFemale
-
-
+unicode_whitespace = "[u"+"'\\"+"xa0']"
+#print unicode_whitespace
+#ws_array = [unicode_whitespace]
+#print ws_array[0];
 page = requests.get('http://www.phila.gov/prisons/page.htm')
 tree = html.fromstring(page.content)
 
-
 def getxpath(columnNumber):
-        return tree.xpath('//tr[14]/td[%i]/text()' % columnNumber)
+    return tree.xpath('//tr[14]/td[%i]/text()' % columnNumber)
 
-f = Facility(getxpath(1),
-                getxpath(2),
-                getxpath(3),
-                getxpath(4),
-                getxpath(5),
-                getxpath(6),
-                getxpath(7),
-                getxpath(8),
-                getxpath(9),
-                getxpath(10),
-                getxpath(11),
-                getxpath(12),
-                getxpath(13),
-                getxpath(14),
-                getxpath(15))
+argumentsArray = []
+for i in range(1, 16, 1):
+    argumentsArray.append(getxpath(i))
+    #print getxpath(i)
+    temp=str(getxpath(i))
+    print temp
+    if temp==unicode_whitespace:
+        print True
+    else:
+        print False
+    # return temp == unicode_whitespace
+
+    # if temp == unicode_whitespace:
+    #     print True
+    # else:
+    #     #print type(temp)
+    #     #print type(unicode_whitespace)
+    #     #print(getxpath(i))
+    #     print False
+
+f = Facility(* argumentsArray)
 
 print(f.facilityName, f.adultMaleCount, f.adultFemaleCount, f.juvenileMaleCount, f.juvenileFemaleCount,
       f.inCountOutCountMale, f.inCountOutCountFemale, f.workersMale, f.workersFemale, f.furloughMale, f.furloughFemale,
       f.openWardMale, f.openWardFemale, f.emergTripsMale, f.emergTripsFemale)
 
 
+#Return string from the list created by getxpath.
+#Can't access items in list of things
+#Check to see if there is anything in the list FIRS
+#If there is pull that out and return it
+#IF empty return a empty string
