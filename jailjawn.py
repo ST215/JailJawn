@@ -10,21 +10,21 @@ tree = html.fromstring(page.content)
 def getxpath(columnNumber):
     return tree.xpath('//tr[7]/td[%i]/text()' % columnNumber)
 
-def getxypath( columnNumber):
-    return tree.xpath('//tr[j]/td[%i]/text()' % columnNumber)
+def getxypath( rowNum, columnNumber):
+    return tree.xpath('//tr[%i]/td[%i]/text()' % (rowNum,columnNumber))
 
 argumentsArray = []
 for j in range (7, 30, 1):
     for i in range(1, 16, 1):
 
 
-        temp=str(getxypath(i))
-        print temp
-        if temp==unicode_whitespace:
+        facilityCellData = str(getxypath(j, i))
+        #print temp
+        if facilityCellData == unicode_whitespace:
             argumentsArray.append(0)
             #print True
         else:
-            argumentsArray.append(getxypath(i))
+            argumentsArray.append(getxypath(j,i))
             #print False
 
     f = Facility(* argumentsArray)
