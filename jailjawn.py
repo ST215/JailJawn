@@ -4,9 +4,6 @@ from lxml import html
 from Facility import Facility
 
 unicode_whitespace = "[u"+"'\\"+"xa0']"
-#print unicode_whitespace
-#ws_array = [unicode_whitespace]
-#print ws_array[0];
 page = requests.get('http://www.phila.gov/prisons/page.htm')
 tree = html.fromstring(page.content)
 
@@ -16,22 +13,13 @@ def getxpath(columnNumber):
 argumentsArray = []
 for i in range(1, 16, 1):
     argumentsArray.append(getxpath(i))
-    #print getxpath(i)
+
     temp=str(getxpath(i))
-    print temp
     if temp==unicode_whitespace:
         print True
     else:
         print False
-    # return temp == unicode_whitespace
-
-    # if temp == unicode_whitespace:
-    #     print True
-    # else:
-    #     #print type(temp)
-    #     #print type(unicode_whitespace)
-    #     #print(getxpath(i))
-    #     print False
+    
 
 f = Facility(* argumentsArray)
 
