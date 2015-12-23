@@ -3,6 +3,7 @@ from lxml import html
 
 from Facility import Facility
 
+
 unicode_whitespace = "[u"+"'\\"+"xa0']"
 page = requests.get('http://www.phila.gov/prisons/page.htm')
 tree = html.fromstring(page.content)
