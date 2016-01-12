@@ -18,3 +18,9 @@ class Facility:
         self.openWardFemale = openWardFemale
         self.emergTripsMale = emergTripsMale
         self.emergTripsFemale = emergTripsFemale
+
+    def print_description(self):
+        print(self.facilityName, self.adultMaleCount, self.adultFemaleCount, self.juvenileMaleCount, self.juvenileFemaleCount,
+              self.inCountOutCountMale, self.inCountOutCountFemale, self.workersMale, self.workersFemale, self.furloughMale,
+              self.furloughFemale,
+              self.openWardMale, self.openWardFemale, self.emergTripsMale, self.emergTripsFemale)

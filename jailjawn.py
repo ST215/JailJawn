@@ -12,24 +12,21 @@ def getxypath(columnNumber, rowNumber):
     if len(value) == 0:
         return default_value
     else:
-        return value[0]
+        if value[0] in non_interesting_data:
+            return default_value
+        else:
+            return value[0]
 
 argumentsArray = []
 for individual_row_item in range(1, 40, 1):
     if not getxypath(individual_row_item, 1) in non_interesting_data:
         for individual_column_item in range(1, 16, 1):
             facilityCellData = getxypath(individual_row_item, individual_column_item)
-            if facilityCellData in non_interesting_data:
-                argumentsArray.append(default_value)
+            if facilityCellData.isdigit():
+                argumentsArray.append(int(facilityCellData))
             else:
-                if facilityCellData.isdigit():
-                    argumentsArray.append(float(facilityCellData))
-                else:
-                    argumentsArray.append(facilityCellData.replace('\r\n', ''))
+                argumentsArray.append(facilityCellData.replace('\r\n', ''))
 
         f = Facility(*argumentsArray)
-        print(f.facilityName, f.adultMaleCount, f.adultFemaleCount, f.juvenileMaleCount, f.juvenileFemaleCount,
-              f.inCountOutCountMale, f.inCountOutCountFemale, f.workersMale, f.workersFemale, f.furloughMale,
-              f.furloughFemale,
-              f.openWardMale, f.openWardFemale, f.emergTripsMale, f.emergTripsFemale)
+        f.print_description()
         argumentsArray = []
