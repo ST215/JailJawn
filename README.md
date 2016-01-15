@@ -10,9 +10,15 @@ Whoever in the Philadelphia Prisions System is publishing the data using Microso
 I am going to covert the data I want to strings and build my own system of getting the text into CSV or JSON.
 
 ##Team
+###Core
 Stanley H. Griggs II<br />
 @st215 Twitter/Instagram<br />
 StanleyGriggs.com<br />
+
+###Advisors
+Mike<br />
+Dan<br />
+Ivan<br />
 
 ##Goal
 Historical Inmate Data, Beautiful Charts, and The Ability see trends over time.
