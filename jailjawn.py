@@ -1,6 +1,7 @@
 import requests
 from lxml import html
 from firebase import firebase
+from datetime import datetime
 
 
 non_interesting_data = ['#REF!', '[]', u'\xa0', '0']
@@ -25,8 +26,9 @@ if __name__ == '__main__':
             else:
                 return value[0]
 
-    
 
+    date = datetime.strptime(getxypath(2,2), "%B %d, %Y").date()
+    print date
 
     argumentsArray = {}
     for individual_row_item in range(6, 40, 1):
@@ -57,4 +59,4 @@ if __name__ == '__main__':
                         'Emergecy Room Trip Female' : argumentsArray['Emergecy Room Trip Female'],
                         'Total Count' : argumentsArray['Total Count']}
 
-            fb.put('/test', argumentsArray['Facility Name'], data)
+            #fb.put('/test', argumentsArray['Facility Name'], data)
