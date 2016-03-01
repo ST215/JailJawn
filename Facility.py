@@ -24,3 +24,7 @@ class Facility:
               self.inCountOutCountMale, self.inCountOutCountFemale, self.workersMale, self.workersFemale, self.furloughMale,
               self.furloughFemale,
               self.openWardMale, self.openWardFemale, self.emergTripsMale, self.emergTripsFemale)
+
+#TODO: Below are the methods moved out of JailJawn.py At somepoint I may need to use these facility objects again
+ #f = Facility(*argumentsArray)
+            #f.print_description()

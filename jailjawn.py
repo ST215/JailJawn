@@ -1,7 +1,5 @@
 import requests
 from lxml import html
-from Facility import Facility
-import json
 from firebase import firebase
 
 
@@ -9,7 +7,7 @@ non_interesting_data = ['#REF!', '[]', u'\xa0', '0']
 page = requests.get('http://www.phila.gov/prisons/page.htm')
 tree = html.fromstring(page.content)
 default_value = '0'
-keys = ['', '''Facility Name''', '''Adult Male''', '''Adult Female''', '''Juvenile Male''', '''Juvenile Female''', '''In Out Male''','''In Out Female''', '''Worker Male''', '''Worker Female''', '''Furlough Male''', '''Furlough Female''', '''Open Ward Male''', '''Open Ward Female''', '''Emergecy Room Trip Male''', '''Emergecy Room Trip Female''', '''Total Count''']
+keys = ['', 'Facility Name', 'Adult Male', 'Adult Female', 'Juvenile Male', 'Juvenile Female', 'In Out Male','In Out Female', 'Worker Male', 'Worker Female', 'Furlough Male', 'Furlough Female', 'Open Ward Male', 'Open Ward Female', 'Emergecy Room Trip Male', 'Emergecy Room Trip Female', 'Total Count']
 FIREBASE_URL = "https://burning-heat-7610.firebaseio.com/"
 fb = firebase.FirebaseApplication(FIREBASE_URL, None) # Create a reference to the Firebase Application
 
@@ -27,11 +25,13 @@ if __name__ == '__main__':
             else:
                 return value[0]
 
+    
+
 
     argumentsArray = {}
     for individual_row_item in range(6, 40, 1):
         if not getxypath(individual_row_item, 1) in non_interesting_data:
-            for individual_column_item in range(1, 16, 1):
+            for individual_column_item in range(1, 17, 1):
                 facilityCellData = getxypath(individual_row_item, individual_column_item)
                 if facilityCellData.isdigit():
                     facilityCellData = int(facilityCellData) #argumentsArray.append(int(facilityCellData))
@@ -40,7 +40,6 @@ if __name__ == '__main__':
                         .replace('.', '') #argumentsArray.append(facilityCellData.replace('\r\n', ''))
 
                 argumentsArray[keys[individual_column_item]] = facilityCellData
-            #print(argumentsArray['Facility Name'])
             data = {'Facility Name' : argumentsArray['Facility Name'],
                         'Adult Male' : argumentsArray['Adult Male'],
                         'Adult Female' : argumentsArray['Adult Female'],
@@ -55,10 +54,7 @@ if __name__ == '__main__':
                         'Open Ward Male' : argumentsArray['Open Ward Male'],
                         'Open Ward Female' : argumentsArray['Open Ward Female'],
                         'Emergecy Room Trip Male' : argumentsArray['Emergecy Room Trip Male'],
-                        'Emergecy Room Trip Female' : argumentsArray['Emergecy Room Trip Female']}
+                        'Emergecy Room Trip Female' : argumentsArray['Emergecy Room Trip Female'],
+                        'Total Count' : argumentsArray['Total Count']}
 
-            fb.put('/JailJawn', argumentsArray['Facility Name'], data)
-            print(argumentsArray['Facility Name'])
-
-            #f = Facility(*argumentsArray)
-            #f.print_description()
+            fb.put('/test', argumentsArray['Facility Name'], data)
