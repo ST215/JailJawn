@@ -17,7 +17,7 @@ fb = firebase.FirebaseApplication(FIREBASE_URL, None) # Create a reference to th
 if __name__ == '__main__':
     def getxypath(columnNumber, rowNumber):
         value = tree.xpath('//tr[%i]/td[%i]/text()' % (columnNumber, rowNumber))
-        print value
+        #print value
         if len(value) == 0:
             return default_value
         else:
@@ -27,8 +27,7 @@ if __name__ == '__main__':
                 return value[0]
 
 
-    date = datetime.strptime(getxypath(2,2), "%B %d, %Y").date()
-    print date
+    dateOnPrisonCensus = datetime.strptime(getxypath(2, 2), "%B %d, %Y").date()
 
     argumentsArray = {}
     for individual_row_item in range(6, 40, 1):
@@ -36,12 +35,12 @@ if __name__ == '__main__':
             for individual_column_item in range(1, 17, 1):
                 facilityCellData = getxypath(individual_row_item, individual_column_item)
                 if facilityCellData.isdigit():
-                    facilityCellData = int(facilityCellData) #argumentsArray.append(int(facilityCellData))
+                    facilityCellData = int(facilityCellData)
                 else:
-                    facilityCellData = facilityCellData.replace('\r\n', '')\
-                        .replace('.', '') #argumentsArray.append(facilityCellData.replace('\r\n', ''))
+                    facilityCellData = facilityCellData.replace('\r\n', ' ').replace('.', ' ').replace(' ', ' ').replace('\n', ' ')
 
                 argumentsArray[keys[individual_column_item]] = facilityCellData
+
             data = {'Facility Name' : argumentsArray['Facility Name'],
                         'Adult Male' : argumentsArray['Adult Male'],
                         'Adult Female' : argumentsArray['Adult Female'],
@@ -59,4 +58,4 @@ if __name__ == '__main__':
                         'Emergecy Room Trip Female' : argumentsArray['Emergecy Room Trip Female'],
                         'Total Count' : argumentsArray['Total Count']}
 
-            #fb.put('/test', argumentsArray['Facility Name'], data)
+            fb.put(str(dateOnPrisonCensus), argumentsArray['Facility Name'], data)
