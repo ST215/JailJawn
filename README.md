@@ -1,26 +1,28 @@
-# JailJawn
+# Jail Jawn
 Data Source: (http://www.phila.gov/prisons/page.htm)
 
-##What is Jail Jawn and Why?
-Jail Jawn is a project for me to get better a programming in general and provide some good in the process.
-The Philadelphia Prisons System updates a daily census (Human Generated not automated) of the count of all inmates at each facility, their status, and location location within the prison system. NOTE: This static page is sometimes updated in frequently. Largest Gap noticated was from December 29th 2015 to January 10th 2016
+## What is Jail Jawn and Why?
+This is the repository for the JailJawn.com scraper code written in Python. This started as a project to learn Python and Serverless deployment.
 
-Whoever in the Philadelphia Prisions System is publishing the data using Microsoft Excel Publish as a Webpage Wizard (AWFUL AWFUL HTML OUTPUT). I tried my best to parse the data to dictionaries so I can export to CSV or JSON but with my current skill level and the state of that HTML OUTPUT that isn't happening. I wanted to use Beautiful Soup and lxml in Python which proved to be very hard and time wasting.
+The following code in the repository accesses the static page provided by The City of Philadelphia Department of Prisons Census page (http://www.phila.gov/prisons/page.htm). This web page is generated internally possible by a human at infrequent times using Excel to HTML which doesn't create clean tables for scraping which requires a custom solution which as been implemented.
 
-I am going to covert the data I want to strings and build my own system of getting the text into CSV or JSON.
+The Python code is deployed to Amazon Web Services Lambda running on a daily CRON job. Once the data is scraped via AWS Lambda it is pushed to our Google Firebase instance for permanent storage.
 
-##Team
-###Core
-Stanley H. Griggs II<br />
-@st215 Twitter/Instagram<br />
-StanleyGriggs.com<br />
+From the Google Firebase instance, we use Heroku to push the data API to the web using Javascript to render the charts on the client side.
 
-###Advisors
-Mike<br />
-Dan<br />
-Ivan<br />
+The repositories for the those are located here:
+API: https://github.com/JailJawn/JailJawnAPI 
+WebApp / Site: https://github.com/JailJawn/jailjawnapp
 
-##Goal
+Any questions I can be found on
+Website: http://www.StanleyGriggs.com/
+
+Twitter: http://www.twitter.com/ST215
+
+Feel free to make issue tickets and suggestions.
+
+
+## Goal
 Historical Inmate Data, Beautiful Charts, and The Ability see trends over time.
 
 ## Tech:
@@ -28,12 +30,12 @@ Python Requests (http://docs.python-requests.org/en/latest/)
 Python lxml (http://lxml.de/)
 
 
-##Steps to run on Windows
-####Download Python
+## Steps to run on Windows
+#### Download Python
 
 	1. http://docs.python-requests.org/en/latest/user/install/#install
 
-####Set up Python Path
+#### Set up Python Path
 
 	1. Open Control Panel
 	2. Go To Security and Systems
@@ -48,8 +50,6 @@ Python lxml (http://lxml.de/)
 	1. clone git://github.com/kennethreitz/requests.git
 	2. Open terminal and run python setup.py install
 
-####Download lxml
+#### Download lxml
 
 	1. https://pypi.python.org/pypi/lxml/3.2.3
-
-
