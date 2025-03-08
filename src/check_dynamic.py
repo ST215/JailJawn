@@ -1,6 +1,7 @@
 """Script to check for dynamically loaded content on the prison census page."""
 
 import asyncio
+
 from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright
 

@@ -3,17 +3,17 @@
 JailJawn Scraper - A modern web scraper for Philadelphia prison data.
 """
 
+import asyncio
 import json
 import logging
 import re
-import asyncio
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, Optional, Union, List
+from typing import Any, Dict, List, Optional, Union
 
-import requests
 from bs4 import BeautifulSoup, Comment
 from playwright.async_api import async_playwright
+import requests
 
 # Configure logging
 logging.basicConfig(
