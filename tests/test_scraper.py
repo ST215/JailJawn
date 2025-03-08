@@ -173,9 +173,16 @@ async def test_fetch_page_success(scraper):
 @pytest.mark.asyncio
 async def test_fetch_page_failure(scraper):
     """Test failed page fetch."""
-    # Test with invalid URL to simulate failure
-    content = await scraper.fetch_page()
-    assert content is None
+    # Save original URL
+    original_url = scraper.BASE_URL
+    try:
+        # Set invalid URL to force failure
+        scraper.BASE_URL = "https://invalid.url.that.does.not.exist/"
+        content = await scraper.fetch_page()
+        assert content is None
+    finally:
+        # Restore original URL
+        scraper.BASE_URL = original_url
 
 
 def test_save_data(scraper, tmp_path):
