@@ -5,5 +5,4 @@ requests==2.31.0
 python-dotenv==1.0.1
 black==24.2.0
 isort==5.13.2
-flake8==7.0.0
-webdriver-manager==4.0.1 
+flake8==7.0.0 
