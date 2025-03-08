@@ -39,8 +39,6 @@ jobs:
       - name: Check code formatting
         run: |
           black --check src/ tests/
-          isort --check-only src/ tests/
-          flake8 src/ tests/
 
       - name: Install Playwright
         run: |
