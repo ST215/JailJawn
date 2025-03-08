@@ -1,1 +1,1 @@
-"""JailJawn scraper package.""" 
+"""JailJawn scraper package."""
