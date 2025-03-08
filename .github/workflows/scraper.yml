@@ -50,14 +50,12 @@ jobs:
   scrape:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'schedule' || github.ref == 'refs/heads/master'
+    if: github.event_name == 'schedule' || contains(github.ref, 'feature/') || github.ref == 'refs/heads/master'
     permissions:
       contents: write
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: master # Ensure we're on master for data updates
 
       - name: Set up Python
         uses: actions/setup-python@v4

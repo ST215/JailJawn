@@ -39,7 +39,7 @@ class JailJawnScraper:
         """
         try:
             headers = {
-                "User-Agent": "JailJawn Scraper/1.0 (https://github.com/yourusername/jailjawn)"
+                "User-Agent": "JailJawn/1.0 (https://github.com/ST215/JailJawn; stanley@stanleygriggs.dev)"
             }
             response = requests.get(self.BASE_URL, headers=headers, timeout=30)
             response.raise_for_status()
