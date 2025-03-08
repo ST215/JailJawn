@@ -8,6 +8,9 @@ on:
   schedule:
     - cron: "0 */6 * * *" # Run every 6 hours
 
+permissions:
+  contents: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -48,9 +51,13 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'schedule' || github.ref == 'refs/heads/master'
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: master # Ensure we're on master for data updates
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -62,13 +69,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Create data directory
+        run: |
+          mkdir -p data
+
       - name: Run scraper
         run: |
           python src/scraper.py
 
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
       - name: Commit and push if changes
         run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
-          git add data/
-          git diff --quiet && git diff --staged --quiet || (git commit -m "data: update prison census data [skip ci]" && git push)
+          git add -f data/  # Force add data directory even though it's in .gitignore
+          git diff --staged --quiet || (git commit -m "data: update prison census data [skip ci]" && git push)
