@@ -161,13 +161,13 @@ async def test_fetch_page_success(scraper):
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         page = await browser.new_page()
-        
+
         # Mock the page content
-        await page.goto('data:text/html,<html>test content</html>')
+        await page.goto("data:text/html,<html>test content</html>")
         content = await page.content()
-        
+
         await browser.close()
-        assert 'test content' in content
+        assert "test content" in content
 
 
 @pytest.mark.asyncio
