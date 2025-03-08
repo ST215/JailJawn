@@ -75,7 +75,6 @@ wheels/
 # Virtual Environment
 venv/
 ENV/
-env/
 
 # IDE
 .idea/
@@ -90,3 +89,8 @@ htmlcov/
 
 # Logs
 *.log
+
+# Project specific
+data/
+test.txt
+.env
