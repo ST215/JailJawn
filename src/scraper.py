@@ -43,6 +43,7 @@ class JailJawnScraper:
             }
             response = requests.get(self.BASE_URL, headers=headers, timeout=30)
             response.raise_for_status()
+            logger.info(f"Successfully fetched page from {self.BASE_URL}")
             return response.text
         except requests.RequestException as e:
             logger.error(f"Failed to fetch page: {e}")
