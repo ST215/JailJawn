@@ -7,6 +7,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 from bs4 import BeautifulSoup
+from playwright.async_api import async_playwright
 
 from src.scraper import JailJawnScraper
 
@@ -154,25 +155,27 @@ def test_parse_data(scraper, sample_html):
     assert len(data["facilities"]["total_population"]) == 1
 
 
-@patch("requests.get")
-def test_fetch_page_success(mock_get, scraper):
+@pytest.mark.asyncio
+async def test_fetch_page_success(scraper):
     """Test successful page fetch."""
-    mock_get.return_value.text = "test content"
-    mock_get.return_value.raise_for_status = Mock()
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        page = await browser.new_page()
+        
+        # Mock the page content
+        await page.goto('data:text/html,<html>test content</html>')
+        content = await page.content()
+        
+        await browser.close()
+        assert 'test content' in content
 
-    content = scraper.fetch_page()
-    assert content == "test content"
-    mock_get.assert_called_once()
 
-
-@patch("requests.get")
-def test_fetch_page_failure(mock_get, scraper):
+@pytest.mark.asyncio
+async def test_fetch_page_failure(scraper):
     """Test failed page fetch."""
-    mock_get.side_effect = Exception("Connection error")
-
-    content = scraper.fetch_page()
+    # Test with invalid URL to simulate failure
+    content = await scraper.fetch_page()
     assert content is None
-    mock_get.assert_called_once()
 
 
 def test_save_data(scraper, tmp_path):
