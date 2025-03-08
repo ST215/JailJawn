@@ -92,5 +92,6 @@ htmlcov/
 
 # Project specific
 data/
+debug/
 test.txt
 .env
