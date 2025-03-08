@@ -4,6 +4,16 @@ on:
   schedule:
     - cron: "0 12 * * *" # Run at 12:00 UTC (7:00 AM EST) daily
   workflow_dispatch: # Allow manual trigger
+  push:
+    branches:
+      - main
+      - master
+      - "feature/**"
+      - "fix/**"
+    paths:
+      - "src/**"
+      - ".github/workflows/**"
+      - "requirements.txt"
 
 permissions:
   contents: write
