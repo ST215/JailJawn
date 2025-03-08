@@ -36,9 +36,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Check code formatting
+        run: |
+          black --check src/ tests/
+          isort --check-only src/ tests/
+          flake8 src/ tests/
+
       - name: Install Playwright
         run: |
           playwright install --with-deps chromium
+
+      - name: Run tests
+        run: |
+          PYTHONPATH=. pytest tests/ -v
 
       - name: Run scraper
         env:
@@ -57,6 +67,7 @@ jobs:
             data/*.json
 
       - name: Commit and push if changes
+        if: success()
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
