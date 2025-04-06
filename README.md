@@ -1,25 +1,56 @@
 # JailJawn Scraper
 
-A modern web scraper built with Python and Beautiful Soup that collects data daily and stores it in JSON format.
+This project scrapes daily inmate census data from the Philadelphia Department of Prisons website. It uses Python, Playwright (for fetching dynamic content), and BeautifulSoup (for parsing HTML) to collect the data and save it as JSON files.
 
-## Features
+## Project Goal
 
-- Daily automated web scraping using GitHub Actions
-- Data storage in JSON format with daily snapshots
-- Modern Python best practices and code organization
-- Comprehensive error handling and logging
+The primary goal of this project is to automatically collect and store historical inmate census data for Philadelphia, making it accessible for analysis and visualization to understand trends over time.
+
+## How it Works
+
+1. **Fetching**: The scraper uses `Playwright` to load the target webpage ([Philadelphia Department of Prisons - Daily Headcount and Census](https://www.phila.gov/departments/philadelphia-department-of-prisons/daily-headcount-and-census/)). Playwright handles any JavaScript execution required to render the full page content.
+2. **Parsing**: Once the page is loaded, `BeautifulSoup` parses the HTML structure.
+3. **Data Extraction**: The scraper identifies relevant tables and extracts the census data.
+4. **Storage**: The extracted data is saved into a JSON file named with the date of the census (e.g., `YYYY-MM-DD.json`) in the `data/` directory.
+5. **Automation**: A GitHub Actions workflow (`.github/workflows/scrape.yml`) is configured to run the scraper automatically on a schedule (daily at 12:00 UTC) and commit the new data back to the repository.
+
+## Core Dependencies
+
+This project relies on the following key Python libraries:
+
+- `playwright`: For browser automation and fetching dynamically rendered web pages.
+- `beautifulsoup4`: For parsing HTML content and extracting data.
+- `python-dotenv`: For managing environment variables.
+
+The full list of dependencies can be found in `requirements.txt`.
 
 ## Setup
 
-1. Clone the repository
-2. Create a virtual environment:
+To run the scraper locally, follow these steps:
+
+1. **Clone the repository:**
+
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   git clone https://github.com/ST215/JailJawn.git
+   cd JailJawn
    ```
-3. Install dependencies:
+
+2. **Create and activate a virtual environment:**
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
+
+3. **Install dependencies:**
+
    ```bash
    pip install -r requirements.txt
+   ```
+
+4. **Install Playwright browsers:**
+   ```bash
+   playwright install chromium
    ```
 
 ## Usage
@@ -30,23 +61,41 @@ To run the scraper manually:
 python src/scraper.py
 ```
 
-The scraped data will be saved in the `data` directory as JSON files with the format `YYYY-MM-DD.json`.
+The script will:
 
-## Development
+- Fetch the latest data from the website
+- Save the data in the `data/` directory
+- Save debug information (HTML snapshot and screenshot) in the `debug/` directory
 
-- Code formatting is handled by `black` and `isort`
-- Linting is done with `flake8`
-- Tests are written using `pytest`
+## Data Storage
 
-To run tests:
+The scraper saves data in the following structure:
 
-```bash
-pytest tests/
-```
+- `data/`: Contains JSON files with census data, named by date (e.g., `2024-04-06.json`)
+- `debug/`: Contains HTML snapshots and screenshots for debugging purposes
 
-## GitHub Actions
+## Contributing
 
-The scraper runs automatically every day through GitHub Actions. Check the `.github/workflows` directory for the workflow configuration.
+Contributions are welcome! If you find issues or have suggestions for improvements, please feel free to:
+
+1. **Open an issue:** Describe the bug or enhancement request.
+2. **Submit a pull request:** Fork the repository, make your changes on a feature branch, and submit a pull request for review.
+
+## Contact
+
+For questions or comments, you can reach out to Stanley Griggs:
+
+- Website: [http://www.StanleyGriggs.com/](http://www.StanleyGriggs.com/)
+- Twitter: [@ST215](http://www.twitter.com/ST215)
+
+---
+
+_Previous project information (may be outdated):_
+
+_The project initially involved deploying the scraper to AWS Lambda and storing data in Google Firebase, with a separate API and web app. These components are not part of the current simplified setup in this repository but may exist in related repositories:_
+
+- _API: https://github.com/JailJawn/JailJawnAPI_
+- _WebApp / Site: https://github.com/JailJawn/jailjawnapp_
 
 # Jail Jawn
 
