@@ -1,186 +1,186 @@
 {
-  "timestamp": "2026-07-14T13:18:54.498655",
-  "scrape_date": "2026-07-14",
+  "timestamp": "2026-07-15T13:22:45.754237",
+  "scrape_date": "2026-07-15",
   "census_date": "2026-07-14",
   "facilities": {
     "in_facility": [
       {
         "Facility": "Curran-Fromhold Correctional Facility (CFCF)",
-        "Adult males": "",
-        "Adult females": "",
-        "Juvenile males": "",
-        "Juvenile females": ""
+        "Adult males": 1407,
+        "Adult females": 0,
+        "Juvenile males": 0,
+        "Juvenile females": 0
       },
       {
         "Facility": "Detention Center (DC)",
-        "Adult males": "",
-        "Adult females": "",
-        "Juvenile males": "",
-        "Juvenile females": ""
+        "Adult males": 356,
+        "Adult females": 0,
+        "Juvenile males": 0,
+        "Juvenile females": 0
       },
       {
         "Facility": "Detention Center Public Health Services Wing (DC PHSW)",
-        "Adult males": "",
-        "Adult females": "",
-        "Juvenile males": "",
-        "Juvenile females": ""
+        "Adult males": 49,
+        "Adult females": 8,
+        "Juvenile males": 0,
+        "Juvenile females": 0
       },
       {
         "Facility": "Philadelphia Industrial Correctional Center (PICC)",
-        "Adult males": "",
-        "Adult females": "",
-        "Juvenile males": "",
-        "Juvenile females": ""
+        "Adult males": 580,
+        "Adult females": 227,
+        "Juvenile males": 0,
+        "Juvenile females": 0
       },
       {
         "Facility": "Riverside Correctional Facility (RCF)",
-        "Adult males": "",
-        "Adult females": "",
-        "Juvenile males": "",
-        "Juvenile females": ""
+        "Adult males": 462,
+        "Adult females": 0,
+        "Juvenile males": 0,
+        "Juvenile females": 0
       },
       {
         "Facility": "Riverside Correctional Facility Alternative and Special Detention Central Unit (RCF ASDCU)",
-        "Adult males": "",
-        "Adult females": "",
-        "Juvenile males": "",
-        "Juvenile females": ""
+        "Adult males": 0,
+        "Adult females": 0,
+        "Juvenile males": 0,
+        "Juvenile females": 0
       },
       {
         "Facility": "Riverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3)",
-        "Adult males": "",
-        "Adult females": "",
-        "Juvenile males": "",
-        "Juvenile females": ""
+        "Adult males": 0,
+        "Adult females": 0,
+        "Juvenile males": 1,
+        "Juvenile females": 0
       },
       {
         "Facility": "Weekenders",
-        "Adult males": "",
-        "Adult females": "",
-        "Juvenile males": "",
-        "Juvenile females": ""
+        "Adult males": 0,
+        "Adult females": 0,
+        "Juvenile males": 0,
+        "Juvenile females": 0
       },
       {
         "Facility": "In facility headcount total",
-        "Adult males": "",
-        "Adult females": "",
-        "Juvenile males": "",
-        "Juvenile females": ""
+        "Adult males": 2854,
+        "Adult females": 235,
+        "Juvenile males": 1,
+        "Juvenile females": 0
       }
     ],
     "temporarily_not_in_facility": [
       {
         "Facility": "Curran-Fromhold Correctional Facility (CFCF)",
-        "Males": "NaN",
-        "Females": "NaN",
-        "Total": ""
+        "Males": 1417,
+        "Females": 0,
+        "Total": 1417
       },
       {
         "Facility": "Detention Center (DC)",
-        "Males": "NaN",
-        "Females": "NaN",
-        "Total": ""
+        "Males": 356,
+        "Females": 0,
+        "Total": 356
       },
       {
         "Facility": "Detention Center Public Health Services Wing (DC PHSW)",
-        "Males": "NaN",
-        "Females": "NaN",
-        "Total": ""
+        "Males": 50,
+        "Females": 8,
+        "Total": 58
       },
       {
         "Facility": "Philadelphia Industrial Correctional Center (PICC)",
-        "Males": "NaN",
-        "Females": "NaN",
-        "Total": ""
+        "Males": 582,
+        "Females": 228,
+        "Total": 810
       },
       {
         "Facility": "Riverside Correctional Facility (RCF)",
-        "Males": "NaN",
-        "Females": "NaN",
-        "Total": ""
+        "Males": 462,
+        "Females": 0,
+        "Total": 462
       },
       {
         "Facility": "Riverside Correctional Facility Alternative and Special Detention Central Unit (RCF ASDCU)",
-        "Males": "NaN",
-        "Females": "NaN",
-        "Total": ""
+        "Males": 0,
+        "Females": 0,
+        "Total": 0
       },
       {
         "Facility": "Riverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3)",
-        "Males": "NaN",
-        "Females": "NaN",
-        "Total": ""
+        "Males": 1,
+        "Females": 0,
+        "Total": 1
       },
       {
         "Facility": "Weekenders",
-        "Males": "NaN",
-        "Females": "NaN",
-        "Total": ""
+        "Males": 0,
+        "Females": 0,
+        "Total": 0
       },
       {
         "Facility": "In facility headcount and temporarily not in facility total",
-        "Males": "",
-        "Females": "",
-        "Total": ""
+        "Males": 2868,
+        "Females": 236,
+        "Total": 3104
       }
     ],
     "facility_totals": [],
     "other_jurisdictions": [
       {
         "Jurisdiction": "State Department of Corrections (DOC)",
-        "Males": "",
-        "Females": "",
-        "Total": ""
+        "Males": 0,
+        "Females": 0,
+        "Total": 0
       },
       {
         "Jurisdiction": "Juveniles",
-        "Males": "",
-        "Females": "",
-        "Total": ""
+        "Males": 0,
+        "Females": 0,
+        "Total": 0
       },
       {
         "Jurisdiction": "Delaware County",
-        "Males": "",
-        "Females": "",
-        "Total": ""
+        "Males": 0,
+        "Females": 0,
+        "Total": 0
       },
       {
         "Jurisdiction": "Lehigh County",
-        "Males": "",
-        "Females": "",
-        "Total": ""
+        "Males": 2,
+        "Females": 0,
+        "Total": 2
       },
       {
         "Jurisdiction": "All other jurisdictions",
-        "Males": "",
-        "Females": "",
-        "Total": ""
+        "Males": 155,
+        "Females": 2,
+        "Total": 157
       },
       {
         "Jurisdiction": "Total",
-        "Males": "NaN",
-        "Females": "NaN",
-        "Total": "NaN"
+        "Males": 157,
+        "Females": 2,
+        "Total": 159
       }
     ],
     "total_population": [
       {
         "": "PDP in facility headcount and temporarily not in facility total",
-        "Males": "",
-        "Females": "",
-        "Total": ""
+        "Males": 2868,
+        "Females": 236,
+        "Total": 3104
       },
       {
         "": "Total PDP incarcerated people held in other jurisdictions",
-        "Males": "NaN",
-        "Females": "NaN",
-        "Total": "NaN"
+        "Males": 157,
+        "Females": 2,
+        "Total": 159
       },
       {
         "": "Total",
-        "Males": "",
-        "Females": "",
-        "Total": ""
+        "Males": 3025,
+        "Females": 238,
+        "Total": 3263
       }
     ]
   }
