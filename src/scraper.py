@@ -124,13 +124,15 @@ class JailJawnScraper:
                     # The census tables are rendered client-side by a Vue app.
                     # The table skeleton exists before the census data arrives,
                     # with today's date as a placeholder and empty cells, so wait
-                    # until at least one cell holds a number rather than waiting
-                    # for the element or for the network to go quiet.
+                    # until at least one cell is entirely a number. (A cell that
+                    # merely contains a digit is not enough: the facility name
+                    # "RCF ASDMOD3" has one.)
                     await page.wait_for_function(
                         """() => {
                             const cells = document.querySelectorAll('#vue-app table td');
-                            return cells.length > 0 &&
-                                Array.from(cells).some(td => /\\d/.test(td.textContent));
+                            return Array.from(cells).some(
+                                td => /^[0-9][0-9,]*$/.test(td.textContent.trim())
+                            );
                         }""",
                         timeout=30000,
                     )
