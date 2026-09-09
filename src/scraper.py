@@ -10,6 +10,7 @@ import re
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
+from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup, Comment
 from playwright.async_api import async_playwright
@@ -69,7 +70,8 @@ class JailJawnScraper:
                 )
 
                 async def block_trackers(route, request):
-                    if any(host in request.url for host in blocked_hosts):
+                    host = urlparse(request.url).hostname or ""
+                    if any(host == h or host.endswith("." + h) for h in blocked_hosts):
                         await route.abort()
                     else:
                         await route.continue_()
@@ -123,7 +125,7 @@ class JailJawnScraper:
                     # Wait for them to exist instead of waiting for the network
                     # to go quiet, which it never reliably does.
                     await page.wait_for_selector(
-                        "#app-content table", state="attached", timeout=30000
+                        "#vue-app table", state="attached", timeout=30000
                     )
 
                     # Try to find any tables
