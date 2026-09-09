@@ -93,3 +93,5 @@ htmlcov/
 # Project specific
 test.txt
 .env
+.venv/
+build/
