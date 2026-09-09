@@ -52,6 +52,30 @@ class JailJawnScraper:
                     user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
                 )
 
+                # Block third-party analytics and trackers. They keep firing
+                # beacons indefinitely, which is why waiting for "networkidle"
+                # was timing out. None of them are needed to render the census.
+                blocked_hosts = (
+                    "googletagmanager.com",
+                    "google-analytics.com",
+                    "analytics.google.com",
+                    "clarity.ms",
+                    "bing.com",
+                    "jam.dev",
+                    "translate.google.com",
+                    "translate.googleapis.com",
+                    "formstack.com",
+                    "code.highcharts.com",
+                )
+
+                async def block_trackers(route, request):
+                    if any(host in request.url for host in blocked_hosts):
+                        await route.abort()
+                    else:
+                        await route.continue_()
+
+                await context.route("**/*", block_trackers)
+
                 # Create page and set up error handling
                 page = await context.new_page()
 
@@ -85,7 +109,7 @@ class JailJawnScraper:
                 try:
                     response = await page.goto(
                         self.BASE_URL,
-                        wait_until="networkidle",
+                        wait_until="domcontentloaded",
                         timeout=30000,  # 30 seconds
                     )
                     if not response:
@@ -95,9 +119,12 @@ class JailJawnScraper:
                         logger.error(f"Bad response status: {response.status}")
                         return None
 
-                    # Wait for potential dynamic content
-                    await page.wait_for_load_state("networkidle")
-                    await page.wait_for_load_state("domcontentloaded")
+                    # The census tables are rendered client-side by a Vue app.
+                    # Wait for them to exist instead of waiting for the network
+                    # to go quiet, which it never reliably does.
+                    await page.wait_for_selector(
+                        "#app-content table", state="attached", timeout=30000
+                    )
 
                     # Try to find any tables
                     table_count = await page.locator("table").count()
@@ -358,7 +385,14 @@ class JailJawnScraper:
         """Execute the scraping process."""
         logger.info("Starting scraping process...")
 
-        html_content = await self.fetch_page()
+        html_content = None
+        for attempt in range(1, 3):
+            html_content = await self.fetch_page()
+            if html_content:
+                break
+            logger.warning(f"Fetch attempt {attempt} failed")
+            if attempt < 2:
+                await asyncio.sleep(15)
         if not html_content:
             return False
 
