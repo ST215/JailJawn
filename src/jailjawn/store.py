@@ -199,10 +199,36 @@ def export_feeds(
     import html
     from datetime import datetime, timezone
 
-    records = [rec for _, rec in all_records(data_dir)][-FEED_ENTRIES:]
+    everything = [rec for _, rec in all_records(data_dir)]
+    by_date = {rec["census_date"]: rec for rec in everything}
+    records = everything[-FEED_ENTRIES:]
     records.reverse()
     if not records:
         return 0
+
+    def total_of(rec):
+        return _total(rec, "total_population", "Category", "Total", "Total")
+
+    def changes(rec) -> tuple[list[str], dict]:
+        from datetime import date, timedelta
+
+        d = date.fromisoformat(rec["census_date"])
+        out, meta = [], {}
+        prev = by_date.get((d - timedelta(days=1)).isoformat())
+        if prev:
+            delta = total_of(rec) - total_of(prev)
+            meta["change_from_previous_day"] = delta
+            out.append(f"{delta:+,} since the day before")
+        try:
+            last_year = by_date.get(d.replace(year=d.year - 1).isoformat())
+        except ValueError:
+            last_year = None
+        if last_year:
+            delta = total_of(rec) - total_of(last_year)
+            meta["change_from_year_before"] = delta
+            out.append(f"{delta:+,} compared with the same date a year earlier")
+        return out, meta
+
     updated = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     def entry_id(rec):
@@ -223,7 +249,8 @@ def export_feeds(
     for rec in records:
         total = _total(rec, "total_population", "Category", "Total", "Total")
         title = f"{_long_date(rec['census_date'])}: {total:,} people"
-        lines = _summary_lines(rec)
+        change_lines, change_meta = changes(rec)
+        lines = _summary_lines(rec)[:1] + change_lines + _summary_lines(rec)[1:]
         published = rec["census_date"] + "T00:00:00Z"
         captured = rec.get("timestamp", "")
         xml += [
@@ -247,6 +274,7 @@ def export_feeds(
                     "census_date": rec["census_date"],
                     "total": total,
                     "captured": captured,
+                    **change_meta,
                 },
             }
         )
