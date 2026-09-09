@@ -4,7 +4,7 @@
   "description": "How many people the Philadelphia Department of Prisons holds, counted every day since 2025-03-06 from the city's daily census page, plus the project's own record of 138 days between 2013-12-21 and 2017-07-18. The city does not publish this data in its open data portal; this is the only public history. Built and maintained by Stanley Griggs II as a non-profit civic project that began at a 2013 hackathon with the City of Philadelphia.",
   "homepage": "https://st215.github.io/JailJawn/",
   "repository": "https://github.com/ST215/JailJawn",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "licenses": [
     { "name": "CC0-1.0", "path": "https://creativecommons.org/publicdomain/zero/1.0/", "title": "CC0 1.0 public domain dedication (data). Credit appreciated, not required. No warranty." },
     { "name": "MIT", "path": "https://opensource.org/licenses/MIT", "title": "MIT (code)" }
