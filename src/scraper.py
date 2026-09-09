@@ -122,10 +122,17 @@ class JailJawnScraper:
                         return None
 
                     # The census tables are rendered client-side by a Vue app.
-                    # Wait for them to exist instead of waiting for the network
-                    # to go quiet, which it never reliably does.
-                    await page.wait_for_selector(
-                        "#vue-app table", state="attached", timeout=30000
+                    # The table skeleton exists before the census data arrives,
+                    # with today's date as a placeholder and empty cells, so wait
+                    # until at least one cell holds a number rather than waiting
+                    # for the element or for the network to go quiet.
+                    await page.wait_for_function(
+                        """() => {
+                            const cells = document.querySelectorAll('#vue-app table td');
+                            return cells.length > 0 &&
+                                Array.from(cells).some(td => /\\d/.test(td.textContent));
+                        }""",
+                        timeout=30000,
                     )
 
                     # Try to find any tables
