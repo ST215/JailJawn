@@ -1,0 +1,89 @@
+{
+  "name": "jailjawn",
+  "title": "JailJawn: Philadelphia Department of Prisons daily census",
+  "description": "How many people the Philadelphia Department of Prisons holds, counted every day since 2025-03-06 from the city's daily census page, plus the project's own record of 138 days between 2013-12-21 and 2017-07-18. The city does not publish this data in its open data portal; this is the only public history. Built and maintained by Stanley Griggs II as a non-profit civic project that began at a 2013 hackathon with the City of Philadelphia.",
+  "homepage": "https://st215.github.io/JailJawn/",
+  "repository": "https://github.com/ST215/JailJawn",
+  "version": "2.3.0",
+  "licenses": [
+    { "name": "CC0-1.0", "path": "https://creativecommons.org/publicdomain/zero/1.0/", "title": "CC0 1.0 public domain dedication (data). Credit appreciated, not required. No warranty." },
+    { "name": "MIT", "path": "https://opensource.org/licenses/MIT", "title": "MIT (code)" }
+  ],
+  "contributors": [
+    { "title": "Stanley Griggs II", "path": "https://github.com/ST215", "role": "author" }
+  ],
+  "sources": [
+    { "title": "Philadelphia Department of Prisons, Daily headcount and census", "path": "https://www.phila.gov/departments/philadelphia-department-of-prisons/daily-headcount-and-census/" }
+  ],
+  "keywords": ["philadelphia", "jail", "prison", "census", "incarceration", "daily", "open data", "civic"],
+  "resources": [
+    {
+      "name": "census",
+      "title": "Daily census since 2025-03-06, one row per census day",
+      "path": "https://raw.githubusercontent.com/ST215/JailJawn/master/census.csv",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8",
+      "dialect": { "delimiter": ",", "header": true },
+      "schema": {
+        "fields": [
+          { "name": "census_date", "type": "date", "description": "The date printed on the city page. Also the record's file name." },
+          { "name": "scrape_date", "type": "date", "description": "The date the page was captured." }
+        ],
+        "missingValues": [""],
+        "primaryKey": ["census_date"],
+        "description": "The remaining 162 columns are integers named table.row.column, for example in_facility.cfcf.adult_males, temporarily_not_in_facility.rcf.male_open_ward, facility_totals.total.total, other_jurisdictions.lehigh_county.total, total_population.total.total. Tables: in_facility, temporarily_not_in_facility, facility_totals, other_jurisdictions, total_population. Rows: cfcf, dc, dc_phsw, picc, rcf, rcf_asdcu, rcf_asdmod3, weekenders, total; state_doc, juveniles, delaware_county, lehigh_county, all_other; pdp_facilities, other_jurisdictions. An empty cell means the city printed a dash, which is not the same as zero. Full list in SCHEMA.md."
+      }
+    },
+    {
+      "name": "latest",
+      "title": "The newest census day, with the five tables as published",
+      "path": "https://st215.github.io/JailJawn/latest.json",
+      "format": "json",
+      "mediatype": "application/json"
+    },
+    {
+      "name": "legacy-summary",
+      "title": "2013-2017 census, one row per day",
+      "path": "https://raw.githubusercontent.com/ST215/JailJawn/master/legacy/summary.csv",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8",
+      "schema": {
+        "fields": [
+          { "name": "date", "type": "date" },
+          { "name": "total", "type": "integer", "description": "Grand total as published." },
+          { "name": "males", "type": "integer" },
+          { "name": "females", "type": "integer" },
+          { "name": "in_facility", "type": "integer" },
+          { "name": "not_in_facility", "type": "integer" },
+          { "name": "other_jurisdictions", "type": "integer" },
+          { "name": "juveniles_in_facility", "type": "integer" },
+          { "name": "open_ward", "type": "integer" },
+          { "name": "emergency_trips", "type": "integer" },
+          { "name": "workers", "type": "integer" },
+          { "name": "furlough", "type": "integer" },
+          { "name": "note", "type": "string", "description": "Present when the published total did not equal males plus females." }
+        ],
+        "missingValues": [""],
+        "primaryKey": ["date"],
+        "description": "Followed by total, males, females and juveniles per facility (cfcf, dc, dc_phsw, picc, rcf, hoc, cec, asd_cambria, asd_cannery, asd_wrp, asd_asdcu, asd_mod3, weekenders, liberty, roth), in_facility_males, in_facility_females, and lehigh_county, delaware_county, state_doc, out_of_county. See legacy/README.md."
+      }
+    },
+    {
+      "name": "legacy-rows",
+      "title": "2013-2017 census, every row of the old page per day",
+      "path": "https://raw.githubusercontent.com/ST215/JailJawn/master/legacy/census-2013-2017.csv",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8"
+    },
+    {
+      "name": "feed",
+      "title": "Last 30 census days as a JSON Feed",
+      "path": "https://st215.github.io/JailJawn/feed.json",
+      "format": "json",
+      "mediatype": "application/feed+json"
+    }
+  ]
+}
