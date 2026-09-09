@@ -18,6 +18,8 @@ const FACILITIES = [
   { key: "dc_phsw", name: "Detention Center Public Health Services Wing", abbr: "DC PHSW", color: "var(--s3)", eras: "both" },
   { key: "picc", name: "Philadelphia Industrial Correctional Center", abbr: "PICC", color: "var(--s4)", eras: "both" },
   { key: "rcf", name: "Riverside Correctional Facility", abbr: "RCF", color: "var(--s5)", eras: "both" },
+  { key: "rcf_asdcu", name: "Riverside Alternative and Special Detention Central Unit", abbr: "RCF ASDCU", color: "var(--ink-2)", eras: "current" },
+  { key: "rcf_asdmod3", name: "Riverside Alternative and Special Detention Modular Unit 3", abbr: "RCF ASDMOD3", color: "var(--juv)", eras: "current" },
   { key: "hoc", name: "House of Correction", abbr: "HOC", color: "var(--ink-2)", eras: "legacy" },
   { key: "cec", name: "Community Education Centers, contracted beds", abbr: "CEC", color: "var(--ink-2)", eras: "legacy" },
   { key: "asd_cambria", name: "Alternative and Special Detention, Cambria", abbr: "", color: "var(--ink-2)", eras: "legacy" },
@@ -162,7 +164,10 @@ const wall = {
   homeX: new Float32Array(0), homeY: new Float32Array(0), x: new Float32Array(0), y: new Float32Array(0),
   vx: new Float32Array(0), vy: new Float32Array(0), born: new Float32Array(0), kind: new Uint8Array(0), state: new Uint8Array(0),
   pointer: { x: -9999, y: -9999, active: false }, raf: 0, maxCount: 0,
+  ratio: 1, // people per symbol; 1 on wide screens, more on phones
+  spotlight: false, // dim the adults, enlarge the children
 };
+const JUV = KINDS.findIndex((k) => k.id === "juv");
 
 function ensureCapacity(nGlyphs) {
   if (nGlyphs <= wall.cap) return;
@@ -181,7 +186,8 @@ function crowdText(comp) {
   let text = "";
   const kinds = [];
   KINDS.forEach((k, ki) => {
-    const count = Math.max(0, comp[k.id] | 0);
+    const people = Math.max(0, comp[k.id] | 0);
+    const count = wall.ratio === 1 ? people : people > 0 ? Math.max(1, Math.round(people / wall.ratio)) : 0;
     text += (k.glyph + ZWSP).repeat(count);
     for (let i = 0; i < count; i++) kinds.push(ki);
   });
@@ -202,14 +208,21 @@ function preparedFor(text, size) {
 // Symbol size is fixed for the whole timeline so the crowd visibly shrinks:
 // the largest size at which the biggest day ever recorded fits the frame.
 function chooseSize(width) {
-  const budget = Math.max(320, Math.min(window.innerHeight * 0.7, 720));
-  const probe = (KINDS[0].glyph + ZWSP).repeat(wall.maxCount);
-  for (const s of [14, 13, 12, 11, 10, 9, 8, 7, 6, 5]) {
-    const lh = Math.round(s * 1.15);
-    const { height } = layoutWithLines(preparedFor(probe, s), width, lh);
-    if (height <= budget || s === 5) { wall.maxHeight = height; return { size: s, lineHeight: lh }; }
+  const budget = Math.max(300, Math.min(window.innerHeight * 0.7, 720));
+  const minSize = width < 700 ? 11 : 8; // phones get fewer, bigger symbols
+  for (const ratio of [1, 2, 5, 10, 20]) {
+    const probe = (KINDS[0].glyph + ZWSP).repeat(Math.ceil(wall.maxCount / ratio));
+    for (const s of [16, 15, 14, 13, 12, 11, 10, 9, 8]) {
+      if (s < minSize) break;
+      const lh = Math.round(s * 1.15);
+      const { height } = layoutWithLines(preparedFor(probe, s), width, lh);
+      if (height <= budget) { wall.maxHeight = height; wall.ratio = ratio; return { size: s, lineHeight: lh }; }
+    }
   }
-  return { size: 5, lineHeight: 6 };
+  wall.ratio = 20;
+  const lh = Math.round(minSize * 1.15);
+  wall.maxHeight = layoutWithLines(preparedFor((KINDS[0].glyph + ZWSP).repeat(Math.ceil(wall.maxCount / 20)), minSize), width, lh).height;
+  return { size: minSize, lineHeight: lh };
 }
 
 function measureGlyph(ch) {
@@ -231,10 +244,14 @@ function layoutWall(comp, { resize = false } = {}) {
     wall.canvas.width = Math.round(width * wall.dpr);
     wall.canvas.height = Math.round(wall.height * wall.dpr);
     wall.canvas.style.height = wall.height + "px";
-    wall.ctx = wall.canvas.getContext("2d");
+    // A wide-gamut canvas where the display supports it, so the accent and
+    // the children's color use the whole screen on HDR and P3 displays.
+    wall.ctx = wall.canvas.getContext("2d", { colorSpace: "display-p3" }) || wall.canvas.getContext("2d");
     wall.ctx.setTransform(wall.dpr, 0, 0, wall.dpr, 0, 0);
     wall.ctx.textBaseline = "alphabetic";
-    $("#frame-note").textContent = `The frame is sized for the largest day on record, ${fmt(wall.maxCount)} people. Today's crowd fills the part it needs.`;
+    $("#frame-note").textContent = (wall.ratio === 1 ? "Each symbol is one person. " : `Each symbol stands for ${wall.ratio} people on a screen this size. `) + `The frame is sized for the largest day on record, ${fmt(wall.maxCount)} people; the selected day fills the part it needs.`;
+    const sym = $("#hero-symbol");
+    if (sym) sym.textContent = wall.ratio === 1 ? "Every symbol below is one person counted that day." : `Every symbol below stands for ${wall.ratio} people counted that day.`;
   }
   const { text, kinds } = crowdText(comp);
   const { lines } = layoutWithLines(preparedFor(text, wall.size), width, wall.lineHeight);
@@ -289,6 +306,7 @@ function drawWall(now) {
   ctx.beginPath(); ctx.moveTo(0, wall.maxHeight + 2); ctx.lineTo(wall.width, wall.maxHeight + 2); ctx.stroke(); ctx.setLineDash([]);
   const px = wall.pointer.x, py = wall.pointer.y, radius = 60, r2 = radius * radius;
   let moving = false, currentKind = -1, lastAlive = 0;
+  const kids = [];
   for (let i = 0; i < wall.count; i++) {
     const st = wall.state[i];
     if (st === 0) continue;
@@ -313,9 +331,17 @@ function drawWall(now) {
       alpha = Math.min(1, age / 300);
       if (alpha < 1) moving = true;
     }
+    if (wall.spotlight && wall.kind[i] === JUV) { kids.push(i, alpha); continue; }
     if (wall.kind[i] !== currentKind) { currentKind = wall.kind[i]; ctx.fillStyle = wall.colors[currentKind]; }
-    ctx.globalAlpha = alpha;
+    ctx.globalAlpha = wall.spotlight ? alpha * 0.14 : alpha;
     ctx.fillText(wall.chars[i], wall.x[i], wall.y[i]);
+  }
+  if (kids.length) {
+    ctx.font = `${Math.round(wall.size * 2.4)}px ${ICON_FONT}`;
+    ctx.fillStyle = wall.colors[JUV];
+    ctx.shadowColor = wall.colors[JUV]; ctx.shadowBlur = wall.size * 1.5;
+    for (let k = 0; k < kids.length; k += 2) { ctx.globalAlpha = kids[k + 1]; ctx.fillText(wall.chars[kids[k]], wall.x[kids[k]] - wall.size * 0.7, wall.y[kids[k]] + wall.size * 0.6); }
+    ctx.shadowBlur = 0; ctx.font = wall.font;
   }
   ctx.globalAlpha = 1;
   if (!moving) wall.count = Math.max(lastAlive, wall.alive);
@@ -455,10 +481,17 @@ function wireControls() {
   const cmp = $("#pick-compare");
   cmp.min = days[0].date; cmp.max = days[days.length - 1].date;
   cmp.addEventListener("change", () => { state.compareIdx = cmp.value ? nearestIdx(cmp.value) : -1; renderCompare(); });
+  const spot = $("#spot-kids");
+  spot.addEventListener("click", () => {
+    wall.spotlight = !wall.spotlight;
+    spot.setAttribute("aria-pressed", String(wall.spotlight));
+    spot.textContent = wall.spotlight ? "Show everyone" : "Show the children";
+    if (!wall.raf) wall.raf = requestAnimationFrame(tick);
+  });
   const sel = $("#pick-facility");
   for (const f of FACILITIES) {
     const o = document.createElement("option");
-    o.value = f.key; o.textContent = facName(f) + (f.eras === "legacy" ? " · 2013–2017 only" : "");
+    o.value = f.key; o.textContent = facName(f) + (f.eras === "legacy" ? " · 2013–2017 only" : f.eras === "current" ? " · since 2025" : "");
     sel.appendChild(o);
   }
   sel.addEventListener("change", () => setFacility(sel.value));
@@ -534,7 +567,7 @@ function lineChart({ id, days, value, color, height = 320, zero = false, eras = 
     const r = svg.getBoundingClientRect();
     xh.setAttribute("x1", x(days[i].date)); xh.setAttribute("x2", x(days[i].date)); xh.style.display = "";
     xd.setAttribute("cx", x(days[i].date)); xd.setAttribute("cy", y(vals[i])); xd.style.display = "";
-    tip.innerHTML = `${longDate(days[i].date)}<br><b>${fmt(vals[i])}</b> people`;
+    tip.innerHTML = `${longDate(days[i].date)}<br><b>${fmt(vals[i])}</b> ${id === "kids" ? (vals[i] === 1 ? "child" : "children") : "people"}`;
     tip.style.display = "block";
     tip.style.left = `${(x(days[i].date) / W) * r.width}px`;
     tip.style.top = `${(y(vals[i]) / H) * r.height - 8}px`;
@@ -638,6 +671,23 @@ function dowChart(days) {
   return byDow;
 }
 
+function childrenSection(all, current, legacy) {
+  const last = current[current.length - 1];
+  const withKids = current.filter((d) => d.juv > 0).length;
+  const peak = all.reduce((b, d) => (d.juv > b.juv ? d : b), all[0]);
+  const curPeak = current.reduce((b, d) => (d.juv > b.juv ? d : b), current[0]);
+  const mean = current.reduce((s, d) => s + d.juv, 0) / current.length;
+  const byFac = FACILITIES.filter((f) => f.eras !== "legacy").map((f) => ({ f, days: current.filter((d) => d.facilities[f.key]?.juv > 0).length, max: Math.max(...current.map((d) => d.facilities[f.key]?.juv || 0)) })).filter((x) => x.days > 0).sort((a, b) => b.days - a.days);
+  const top = byFac[0];
+  const topShare = top ? Math.round((100 * current.reduce((s, d) => s + (d.facilities[top.f.key]?.juv || 0), 0)) / Math.max(1, current.reduce((s, d) => s + d.juv, 0))) : 0;
+  $("#kids-h").innerHTML = last.juv > 0
+    ? `On ${longDate(last.date)}, <em>${fmt(last.juv)}</em> ${last.juv === 1 ? "child was" : "children were"} held in Philadelphia's adult jails.`
+    : `On ${longDate(last.date)} no children were held in Philadelphia's adult jails. That is rare.`;
+  $("#kids-lede").innerHTML = `The census counts juveniles held in adult facilities as their own line. In the daily record there has been at least one on <strong>${fmt(withKids)} of ${fmt(current.length)} days</strong>, an average of ${mean.toFixed(1)} a day, with a peak of <strong>${fmt(curPeak.juv)}</strong> on ${shortDate(curPeak.date)}. The 2013–2017 record peaked at <strong>${fmt(peak.juv)}</strong> on ${shortDate(peak.date)}.${top ? ` <strong>${topShare}%</strong> of them, across the daily record, were at ${facName(top.f)}, a unit that holds almost no adults.` : ""}`;
+  $("#kids-facs").innerHTML = byFac.map((x) => `<div class="tile"><div class="label">${facName(x.f)}</div><div class="value">${fmt(x.days)}<small>days with a child held</small></div><div class="foot">Most at once: ${fmt(x.max)}</div></div>`).join("");
+  lineChart({ id: "kids", days: all.filter((d) => d.era === "current" || d.juv > 0), value: (d) => d.juv, color: css("--juv"), zero: true, eras: true, hoverPill: $("#children .how") });
+}
+
 function tiles(days) {
   const mean = (k) => days.reduce((s, d) => s + d[k], 0) / days.length;
   const max = (k) => days.reduce((b, d) => (d[k] > b[k] ? d : b), days[0]);
@@ -737,9 +787,8 @@ async function main() {
   wall.colors = KINDS.map((k) => css(k.css));
 
   $("#hero-h1").innerHTML = `On ${longDate(last.date)}, Philadelphia held <em>${fmt(last.total)}</em> people in its jails.`;
-  $("#hero-sub").innerHTML = legacy.length
-    ? `On ${shortDate(first.date)} it held <strong>${fmt(first.total)}</strong>. Every symbol below is one person counted that day. Press play to watch the years go by, drag the timeline, or pick a date.`
-    : `Every symbol below is one person counted that day. Press play, drag the timeline, or pick a date.`;
+  $("#hero-sub").innerHTML = (legacy.length ? `On ${shortDate(first.date)} it held <strong>${fmt(first.total)}</strong>. ` : "")
+    + `<span id="hero-symbol">Every symbol below is one person counted that day.</span> Press play to watch the years go by, drag the timeline, or pick a date.`;
   $("#hero-eyebrow").textContent = `Philadelphia Department of Prisons · ${fmt(all.length)} census days recorded since ${shortDate(first.date)}`;
   document.title = `JailJawn · ${fmt(last.total)} people`;
 
@@ -751,7 +800,10 @@ async function main() {
   const byDow = dowChart(current);
   facilityPanels(all);
   tiles(current);
+  childrenSection(all, current, legacy);
   findings(all, current, legacy, byDow);
+  const ld = $("#ld-dataset");
+  if (ld) { try { const j = JSON.parse(ld.textContent); j.temporalCoverage = `${first.date}/${last.date}`; j.dateModified = last.date; ld.textContent = JSON.stringify(j); } catch { /* leave as is */ } }
   tableView(current[current.length - 1]);
 
   const c0 = current[0], c1 = current[current.length - 1];
