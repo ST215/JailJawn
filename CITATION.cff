@@ -11,7 +11,7 @@ repository-code: "https://github.com/ST215/JailJawn"
 url: "https://st215.github.io/JailJawn/"
 license: CC0-1.0
 date-released: 2026-09-09
-version: 2.3.0
+version: 2.4.0
 abstract: >-
   A daily record of how many people the Philadelphia Department of Prisons holds,
   collected from the city's daily census page since March 2025, with the project's

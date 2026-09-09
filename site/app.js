@@ -156,38 +156,23 @@ function composition(day, facility) {
 const headcount = (day, facility) => (facility ? day.facilities[facility]?.total ?? 0 : day.total);
 
 // ---------------------------------------------------------------- the crowd
+// A still picture of the latest census: one symbol per person on wide
+// screens, one per several on phones, laid out by pretext and drawn once.
+// Nothing here animates; the timeline below animates numbers instead.
 
 const wall = {
-  canvas: $("#wall"), ctx: null, font: "", size: 8, lineHeight: 10, width: 0, height: 0, dpr: 1,
-  glyphWidth: new Map(), prepared: new Map(), maxHeight: 0,
-  count: 0, cap: 0, chars: [], colors: [],
-  homeX: new Float32Array(0), homeY: new Float32Array(0), x: new Float32Array(0), y: new Float32Array(0),
-  vx: new Float32Array(0), vy: new Float32Array(0), born: new Float32Array(0), kind: new Uint8Array(0), state: new Uint8Array(0),
-  pointer: { x: -9999, y: -9999, active: false }, raf: 0, maxCount: 0,
-  ratio: 1, // people per symbol; 1 on wide screens, more on phones
-  spotlight: false, // dim the adults, enlarge the children
+  canvas: $("#wall"), ctx: null, font: "", size: 12, lineHeight: 14, width: 0, height: 0, dpr: 1,
+  prepared: new Map(), colors: [], ratio: 1, spotlight: false, comp: null, count: 0,
 };
 const JUV = KINDS.findIndex((k) => k.id === "juv");
-
-function ensureCapacity(nGlyphs) {
-  if (nGlyphs <= wall.cap) return;
-  const cap = Math.max(nGlyphs, 4096);
-  const grow = (arr, Ctor) => { const next = new Ctor(cap); next.set(arr); return next; };
-  for (const k of ["homeX", "homeY", "x", "y", "vx", "vy", "born"]) wall[k] = grow(wall[k], Float32Array);
-  wall.kind = grow(wall.kind, Uint8Array);
-  wall.state = grow(wall.state, Uint8Array);
-  wall.cap = cap;
-}
-
-// Symbols are joined with zero-width spaces so pretext may break the line
-// between any two people; a run of icon codepoints is otherwise one word.
 const ZWSP = "\u200b";
-function crowdText(comp) {
+
+function crowdText(comp, ratio) {
   let text = "";
   const kinds = [];
   KINDS.forEach((k, ki) => {
     const people = Math.max(0, comp[k.id] | 0);
-    const count = wall.ratio === 1 ? people : people > 0 ? Math.max(1, Math.round(people / wall.ratio)) : 0;
+    const count = ratio === 1 ? people : people > 0 ? Math.max(1, Math.round(people / ratio)) : 0;
     text += (k.glyph + ZWSP).repeat(count);
     for (let i = 0; i < count; i++) kinds.push(ki);
   });
@@ -200,163 +185,106 @@ function preparedFor(text, size) {
   if (!p) {
     p = prepareWithSegments(text, `${size}px ${ICON_FONT}`, { wordBreak: "break-word" });
     wall.prepared.set(key, p);
-    if (wall.prepared.size > 400) wall.prepared.delete(wall.prepared.keys().next().value);
+    if (wall.prepared.size > 40) wall.prepared.delete(wall.prepared.keys().next().value);
   }
   return p;
 }
 
-// Symbol size is fixed for the whole timeline so the crowd visibly shrinks:
-// the largest size at which the biggest day ever recorded fits the frame.
-function chooseSize(width) {
-  const budget = Math.max(300, Math.min(window.innerHeight * 0.7, 720));
-  const minSize = width < 700 ? 11 : 8; // phones get fewer, bigger symbols
-  for (const ratio of [1, 2, 5, 10, 20]) {
-    const probe = (KINDS[0].glyph + ZWSP).repeat(Math.ceil(wall.maxCount / ratio));
-    for (const s of [16, 15, 14, 13, 12, 11, 10, 9, 8]) {
-      if (s < minSize) break;
-      const lh = Math.round(s * 1.15);
-      const { height } = layoutWithLines(preparedFor(probe, s), width, lh);
-      if (height <= budget) { wall.maxHeight = height; wall.ratio = ratio; return { size: s, lineHeight: lh }; }
+// The largest symbol, and the smallest people-per-symbol ratio, at which
+// this count fits the frame. Phones get fewer, bigger symbols.
+function chooseScale(total, width) {
+  const budget = Math.max(260, Math.min(window.innerHeight * 0.55, 520));
+  const minSize = width < 700 ? 13 : 10;
+  for (const ratio of [1, 2, 5, 10, 20, 50]) {
+    const probe = (KINDS[0].glyph + ZWSP).repeat(Math.max(1, Math.ceil(total / ratio)));
+    for (const size of [22, 20, 18, 16, 15, 14, 13, 12, 11, 10]) {
+      if (size < minSize) break;
+      const lh = Math.round(size * 1.15);
+      const { height } = layoutWithLines(preparedFor(probe, size), width, lh);
+      if (height <= budget) return { ratio, size, lineHeight: lh };
     }
   }
-  wall.ratio = 20;
-  const lh = Math.round(minSize * 1.15);
-  wall.maxHeight = layoutWithLines(preparedFor((KINDS[0].glyph + ZWSP).repeat(Math.ceil(wall.maxCount / 20)), minSize), width, lh).height;
-  return { size: minSize, lineHeight: lh };
+  return { ratio: 50, size: minSize, lineHeight: Math.round(minSize * 1.15) };
 }
 
-function measureGlyph(ch) {
-  let w = wall.glyphWidth.get(ch);
-  if (w == null) { w = wall.ctx.measureText(ch).width; wall.glyphWidth.set(ch, w); }
-  return w;
-}
-
-function layoutWall(comp, { resize = false } = {}) {
+function drawCrowd(comp) {
+  wall.comp = comp;
   const width = Math.max(200, Math.floor(wall.canvas.parentElement.clientWidth - 28));
-  if (resize || width !== wall.width || !wall.font) {
-    const pick = chooseSize(width);
-    wall.size = pick.size; wall.lineHeight = pick.lineHeight;
-    wall.font = `${wall.size}px ${ICON_FONT}`;
-    wall.glyphWidth.clear();
-    wall.width = width;
-    wall.height = Math.ceil(wall.maxHeight) + wall.lineHeight;
-    wall.dpr = Math.min(devicePixelRatio || 1, 2);
-    wall.canvas.width = Math.round(width * wall.dpr);
-    wall.canvas.height = Math.round(wall.height * wall.dpr);
-    wall.canvas.style.height = wall.height + "px";
-    // A wide-gamut canvas where the display supports it, so the accent and
-    // the children's color use the whole screen on HDR and P3 displays.
-    wall.ctx = wall.canvas.getContext("2d", { colorSpace: "display-p3" }) || wall.canvas.getContext("2d");
-    wall.ctx.setTransform(wall.dpr, 0, 0, wall.dpr, 0, 0);
-    wall.ctx.textBaseline = "alphabetic";
-    $("#frame-note").textContent = (wall.ratio === 1 ? "Each symbol is one person. " : `Each symbol stands for ${wall.ratio} people on a screen this size. `) + `The frame is sized for the largest day on record, ${fmt(wall.maxCount)} people; the selected day fills the part it needs.`;
-    const sym = $("#hero-symbol");
-    if (sym) sym.textContent = wall.ratio === 1 ? "Every symbol below is one person counted that day." : `Every symbol below stands for ${wall.ratio} people counted that day.`;
-  }
-  const { text, kinds } = crowdText(comp);
-  const { lines } = layoutWithLines(preparedFor(text, wall.size), width, wall.lineHeight);
-  wall.ctx.font = wall.font;
-  const previous = wall.count;
-  ensureCapacity(Math.max(kinds.length, previous));
-  const now = performance.now();
+  const total = KINDS.reduce((s, k) => s + Math.max(0, comp[k.id] | 0), 0);
+  const scale = chooseScale(total, width);
+  wall.ratio = scale.ratio; wall.size = scale.size; wall.lineHeight = scale.lineHeight;
+  wall.font = `${wall.size}px ${ICON_FONT}`;
+  const { text, kinds } = crowdText(comp, wall.ratio);
+  const { lines, height } = layoutWithLines(preparedFor(text, wall.size), width, wall.lineHeight);
+
+  wall.width = width;
+  wall.height = Math.ceil(height) + 4;
+  wall.dpr = Math.min(devicePixelRatio || 1, 3);
+  wall.canvas.width = Math.round(width * wall.dpr);
+  wall.canvas.height = Math.round(wall.height * wall.dpr);
+  wall.canvas.style.height = wall.height + "px";
+  // A wide-gamut canvas where the display supports it.
+  const ctx = wall.ctx || (wall.ctx = wall.canvas.getContext("2d", { colorSpace: "display-p3" }) || wall.canvas.getContext("2d"));
+  ctx.setTransform(wall.dpr, 0, 0, wall.dpr, 0, 0);
+  ctx.clearRect(0, 0, width, wall.height);
+  ctx.textBaseline = "alphabetic";
+  ctx.font = wall.font;
+  const glyphWidth = new Map();
+  const measure = (ch) => { let w = glyphWidth.get(ch); if (w == null) { w = ctx.measureText(ch).width; glyphWidth.set(ch, w); } return w; };
   const baseline = wall.lineHeight * 0.85;
-  let i = 0;
+  const kids = [];
+  let i = 0, currentKind = -1;
   for (let li = 0; li < lines.length; li++) {
     let x = 0;
     const y = baseline + li * wall.lineHeight;
     for (const ch of lines[li].text) {
       if (ch === ZWSP) continue;
-      wall.homeX[i] = x; wall.homeY[i] = y; wall.chars[i] = ch; wall.kind[i] = kinds[i] ?? 0;
-      if (wall.state[i] !== 1 || resize) {
-        // arriving: drop in from above
-        wall.x[i] = x + (Math.random() - 0.5) * 4; wall.y[i] = y - 20 - Math.random() * 30;
-        wall.vx[i] = 0; wall.vy[i] = 0;
-        wall.born[i] = now + (resize ? (i / kinds.length) * 700 : Math.random() * 350);
-        wall.state[i] = 1;
+      const kind = kinds[i] ?? 0;
+      if (wall.spotlight && kind === JUV) kids.push(x, y, ch);
+      else {
+        if (kind !== currentKind) { currentKind = kind; ctx.fillStyle = wall.colors[kind]; }
+        ctx.globalAlpha = wall.spotlight ? 0.14 : 1;
+        ctx.fillText(ch, x, y);
       }
-      x += measureGlyph(ch);
+      x += measure(ch);
       i++;
     }
   }
-  // leaving: everything past the new count falls out of the frame
-  for (let k = i; k < previous; k++) {
-    if (wall.state[k] === 1) { wall.state[k] = 2; wall.born[k] = now + Math.random() * 250; wall.vx[k] = (Math.random() - 0.5) * 1.5; wall.vy[k] = -0.5 - Math.random(); }
-  }
-  wall.count = Math.max(i, previous);
-  wall.alive = i;
-  if (reduceMotion) {
-    for (let k = 0; k < wall.count; k++) { wall.x[k] = wall.homeX[k]; wall.y[k] = wall.homeY[k]; wall.born[k] = 0; if (wall.state[k] === 2) wall.state[k] = 0; }
-    wall.count = i;
-    drawWall(now);
-  } else if (!wall.raf) wall.raf = requestAnimationFrame(tick);
-}
-
-function tick(now) {
-  wall.raf = 0;
-  const settled = drawWall(now);
-  if (!settled || wall.pointer.active) wall.raf = requestAnimationFrame(tick);
-}
-
-function drawWall(now) {
-  const ctx = wall.ctx;
-  ctx.clearRect(0, 0, wall.width, wall.height);
-  ctx.font = wall.font;
-  // the 2013 extent, as a faint floor
-  ctx.strokeStyle = css("--axis"); ctx.lineWidth = 1; ctx.setLineDash([2, 4]);
-  ctx.beginPath(); ctx.moveTo(0, wall.maxHeight + 2); ctx.lineTo(wall.width, wall.maxHeight + 2); ctx.stroke(); ctx.setLineDash([]);
-  const px = wall.pointer.x, py = wall.pointer.y, radius = 60, r2 = radius * radius;
-  let moving = false, currentKind = -1, lastAlive = 0;
-  const kids = [];
-  for (let i = 0; i < wall.count; i++) {
-    const st = wall.state[i];
-    if (st === 0) continue;
-    const age = now - wall.born[i];
-    if (age < 0) { moving = true; continue; }
-    let alpha = 1;
-    if (st === 2) {
-      wall.vy[i] += 0.3; wall.x[i] += wall.vx[i]; wall.y[i] += wall.vy[i];
-      alpha = Math.max(0, 1 - age / 700);
-      if (alpha === 0 || wall.y[i] > wall.height + 20) { wall.state[i] = 0; continue; }
-      moving = true;
-    } else {
-      lastAlive = i + 1;
-      let ax = (wall.homeX[i] - wall.x[i]) * 0.14, ay = (wall.homeY[i] - wall.y[i]) * 0.14;
-      if (wall.pointer.active) {
-        const dx = wall.x[i] - px, dy = wall.y[i] - py, d2 = dx * dx + dy * dy;
-        if (d2 < r2 && d2 > 0.01) { const d = Math.sqrt(d2), push = ((radius - d) / radius) * 2; ax += (dx / d) * push; ay += (dy / d) * push; }
-      }
-      wall.vx[i] = (wall.vx[i] + ax) * 0.7; wall.vy[i] = (wall.vy[i] + ay) * 0.7;
-      wall.x[i] += wall.vx[i]; wall.y[i] += wall.vy[i];
-      if (Math.abs(wall.vx[i]) + Math.abs(wall.vy[i]) > 0.02) moving = true;
-      alpha = Math.min(1, age / 300);
-      if (alpha < 1) moving = true;
-    }
-    if (wall.spotlight && wall.kind[i] === JUV) { kids.push(i, alpha); continue; }
-    if (wall.kind[i] !== currentKind) { currentKind = wall.kind[i]; ctx.fillStyle = wall.colors[currentKind]; }
-    ctx.globalAlpha = wall.spotlight ? alpha * 0.14 : alpha;
-    ctx.fillText(wall.chars[i], wall.x[i], wall.y[i]);
-  }
   if (kids.length) {
-    ctx.font = `${Math.round(wall.size * 2.4)}px ${ICON_FONT}`;
+    ctx.globalAlpha = 1;
+    ctx.font = `${Math.round(wall.size * 2.2)}px ${ICON_FONT}`;
     ctx.fillStyle = wall.colors[JUV];
-    ctx.shadowColor = wall.colors[JUV]; ctx.shadowBlur = wall.size * 1.5;
-    for (let k = 0; k < kids.length; k += 2) { ctx.globalAlpha = kids[k + 1]; ctx.fillText(wall.chars[kids[k]], wall.x[kids[k]] - wall.size * 0.7, wall.y[kids[k]] + wall.size * 0.6); }
+    ctx.shadowColor = wall.colors[JUV]; ctx.shadowBlur = wall.size;
+    for (let k = 0; k < kids.length; k += 3) ctx.fillText(kids[k + 2], kids[k] - wall.size * 0.6, kids[k + 1] + wall.size * 0.5);
     ctx.shadowBlur = 0; ctx.font = wall.font;
   }
   ctx.globalAlpha = 1;
-  if (!moving) wall.count = Math.max(lastAlive, wall.alive);
-  return !moving;
-}
-
-function wirePointer() {
-  const c = wall.canvas;
-  const set = (e) => { const r = c.getBoundingClientRect(); wall.pointer.x = e.clientX - r.left; wall.pointer.y = e.clientY - r.top; wall.pointer.active = true; if (!wall.raf && !reduceMotion) wall.raf = requestAnimationFrame(tick); };
-  c.addEventListener("pointermove", set);
-  c.addEventListener("pointerleave", () => { wall.pointer.active = false; if (!wall.raf && !reduceMotion) wall.raf = requestAnimationFrame(tick); });
+  wall.count = i;
+  $("#frame-note").textContent = wall.ratio === 1
+    ? `Each symbol is one person. ${fmt(total)} symbols.`
+    : `Each symbol stands for ${wall.ratio} people on a screen this size: ${fmt(i)} symbols for ${fmt(total)} people.`;
+  const sym = $("#hero-symbol");
+  if (sym) sym.textContent = wall.ratio === 1 ? "Every symbol below is one person counted that day." : `Every symbol below stands for ${wall.ratio} people counted that day.`;
 }
 
 function renderLegend(comp) {
   $("#legend").innerHTML = KINDS.map((k) => `<span><span class="ms" style="color:var(${k.css})" aria-hidden="true">${k.glyph}</span>${k.label}<span class="n">${fmt(comp[k.id])}</span></span>`).join("");
+}
+
+// Numbers count up or down to their new value instead of jumping.
+const tweens = new Map();
+function tweenNumber(el, to, suffix = "") {
+  const from = Number(String(el.dataset.value ?? "0").replace(/[^0-9.-]/g, "")) || 0;
+  el.dataset.value = String(to);
+  if (reduceMotion || from === to) { el.textContent = fmt(to) + suffix; return; }
+  const t0 = performance.now(), dur = 550;
+  cancelAnimationFrame(tweens.get(el));
+  const step = (now) => {
+    const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = fmt(from + (to - from) * e) + suffix;
+    if (p < 1) tweens.set(el, requestAnimationFrame(step));
+  };
+  tweens.set(el, requestAnimationFrame(step));
 }
 
 // ---------------------------------------------------------------- timeline
@@ -375,21 +303,29 @@ function showDay(idx, { fromPlay = false } = {}) {
   const day = state.days[idx];
   const comp = composition(day, state.facility);
   const count = headcount(day, state.facility);
-  $("#st-date").textContent = longDate(day.date) + (day.era === "legacy" ? " · from the 2013–2017 record" : "");
-  $("#st-total").textContent = fmt(count);
   const first = state.days[0];
   const firstCount = headcount(first, state.facility);
   const change = count - firstCount;
-  $("#st-change").innerHTML = idx === 0 ? `The earliest day on record.` : `<b>${signed(change)}</b> since ${shortDate(first.date)}${firstCount ? ` (${signed(pct(firstCount, count))}%)` : ""}`;
-  renderLegend(comp);
-  layoutWall(comp);
+  $("#ro-date").textContent = longDate(day.date) + (day.era === "legacy" ? " · from the 2013–2017 record" : "");
+  tweenNumber($("#ro-total"), count);
+  $("#ro-change").innerHTML = idx === 0 ? "The earliest day on record." : `<b>${signed(change)}</b> since ${shortDate(first.date)}${firstCount ? ` (${signed(pct(firstCount, count))}%)` : ""}`;
+  const cats = $("#ro-cats");
+  if (!cats.children.length) cats.innerHTML = KINDS.map((k) => `<div class="cat"><span class="ms" style="color:var(${k.css})" aria-hidden="true">${k.glyph}</span><b data-cat="${k.id}">0</b><span>${k.label}</span></div>`).join("");
+  KINDS.forEach((k) => tweenNumber(cats.querySelector(`[data-cat="${k.id}"]`), comp[k.id]));
   $("#day").value = String(idx);
-  if (!fromPlay) {
-    $("#pick-date").value = day.date;
-    history.replaceState(null, "", "#" + day.date);
-  }
+  if (!fromPlay) { $("#pick-date").value = day.date; history.replaceState(null, "", "#" + day.date); }
   markCharts(day.date);
   renderCompare();
+}
+
+function showLatestCrowd() {
+  const latest = state.days[state.days.length - 1];
+  const comp = composition(latest, state.facility);
+  const f = FACILITIES.find((x) => x.key === state.facility);
+  $("#st-date").textContent = `Latest census, ${longDate(latest.date)}` + (f ? `, ${facName(f)}` : "");
+  $("#st-total").textContent = fmt(headcount(latest, state.facility));
+  renderLegend(comp);
+  drawCrowd(comp);
 }
 
 function setFacility(key) {
@@ -398,6 +334,7 @@ function setFacility(key) {
   $("#long-title").textContent = f ? `People held at ${facName(f)}, 2013 to today` : "People held by the Philadelphia Department of Prisons, 2013 to today";
   $("#trend-title").textContent = f ? `${facName(f)}, every day since March 2025` : "Every day since March 2025";
   drawMainCharts();
+  showLatestCrowd();
   showDay(state.idx);
 }
 
@@ -416,7 +353,7 @@ function stopPlay() {
   state.playing = false;
   cancelAnimationFrame(state.playRaf);
   $("#play").textContent = state.idx >= state.days.length - 1 ? "Play from 2013 again" : "Play";
-  $("#caption").style.display = "none";
+  $("#caption").hidden = true;
   history.replaceState(null, "", "#" + state.days[state.idx].date);
   $("#pick-date").value = state.days[state.idx].date;
 }
@@ -432,9 +369,9 @@ function playTick(ts) {
   // jump the eight-year gap instead of waiting through it
   if (idx + 1 < days.length && daysBetween(days[idx].date, days[idx + 1].date) > 365 && state.clock > dayNum(days[idx].date) + 20) {
     const cap = $("#caption");
-    cap.innerHTML = `<b>No record from ${monthYear(days[idx].date)} to ${monthYear(days[idx + 1].date)}.</b><br>The first scraper stopped in 2017. The daily record begins in 2025.`;
-    cap.style.display = "block";
-    setTimeout(() => (cap.style.display = "none"), 2600);
+    cap.innerHTML = `<b>No record from ${monthYear(days[idx].date)} to ${monthYear(days[idx + 1].date)}.</b> The first scraper stopped in 2017. The daily record begins in 2025.`;
+    cap.hidden = false;
+    setTimeout(() => (cap.hidden = true), 3000);
     idx++;
     state.clock = dayNum(days[idx].date);
   }
@@ -486,7 +423,7 @@ function wireControls() {
     wall.spotlight = !wall.spotlight;
     spot.setAttribute("aria-pressed", String(wall.spotlight));
     spot.textContent = wall.spotlight ? "Show everyone" : "Show the children";
-    if (!wall.raf) wall.raf = requestAnimationFrame(tick);
+    drawCrowd(wall.comp);
   });
   const sel = $("#pick-facility");
   for (const f of FACILITIES) {
@@ -500,7 +437,7 @@ function wireControls() {
     if (innerWidth === lastWidth) return; // mobile URL bar changes height only
     lastWidth = innerWidth;
     clearTimeout(t);
-    t = setTimeout(() => layoutWall(composition(days[state.idx], state.facility), { resize: true }), 150);
+    t = setTimeout(() => drawCrowd(wall.comp), 150);
   });
 }
 
@@ -783,10 +720,10 @@ async function main() {
   const all = [...legacy, ...current].sort((a, b) => a.date.localeCompare(b.date));
   state.days = all;
   const last = all[all.length - 1], first = all[0];
-  wall.maxCount = Math.max(...all.map((d) => d.total));
   wall.colors = KINDS.map((k) => css(k.css));
 
-  $("#hero-h1").innerHTML = `On ${longDate(last.date)}, Philadelphia held <em>${fmt(last.total)}</em> people in its jails.`;
+  $("#hero-h1").innerHTML = `Right now Philadelphia holds <em>${fmt(last.total)}</em> people in its jails.`;
+  $("#hero-eyebrow-date").textContent = `Latest census: ${longDate(last.date)}`;
   $("#hero-sub").innerHTML = (legacy.length ? `On ${shortDate(first.date)} it held <strong>${fmt(first.total)}</strong>. ` : "")
     + `<span id="hero-symbol">Every symbol below is one person counted that day.</span> Press play to watch the years go by, drag the timeline, or pick a date.`;
   $("#hero-eyebrow").textContent = `Philadelphia Department of Prisons · ${fmt(all.length)} census days recorded since ${shortDate(first.date)}`;
@@ -794,8 +731,8 @@ async function main() {
 
   try { await Promise.all([document.fonts.load(`12px ${ICON_FONT}`), document.fonts.load('600 14px "Public Sans"')]); } catch { /* fall back */ }
 
-  wirePointer();
   wireControls();
+  showLatestCrowd();
   drawMainCharts();
   const byDow = dowChart(current);
   facilityPanels(all);
