@@ -91,6 +91,22 @@ Rows: `PDP in facility headcount and temporarily not in facility total`, `Total 
 
 Columns are named `table.row.column`, for example `in_facility.cfcf.adult_males` or `facility_totals.total.total`. The first two columns are `census_date` and `scrape_date`. There are 164 columns. A dash on the page is an empty cell. The full list is produced by `jailjawn.store.csv_columns()`.
 
+## Feeds
+
+Three files at the repository root are rebuilt on every run and served from the site:
+
+| File | What it is |
+|---|---|
+| `feed.xml` | An Atom feed with one entry per census day for the last 30 days. Subscribe at `https://st215.github.io/JailJawn/feed.xml`. |
+| `feed.json` | The same entries as a [JSON Feed](https://jsonfeed.org/). Each item carries `_jailjawn.total` and `_jailjawn.census_date`. |
+| `latest.json` | The newest record, exactly as stored in `data/`. |
+
+Entry links point at the site with the census date in the URL fragment, for example `https://st215.github.io/JailJawn/#2026-09-07`, which opens the page on that day.
+
+## The 2013–2017 census
+
+`legacy/` holds the census from the project's first scraper, 138 days between 2013-12-21 and 2017-07-18, in a different schema from the daily record. See [legacy/README.md](legacy/README.md).
+
 ## What the checks guarantee
 
 Every record in `data/` has passed these before being committed:
