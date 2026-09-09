@@ -2,6 +2,8 @@
 
 A daily record of how many people are held by the Philadelphia Department of Prisons, collected from the city's [daily headcount and census page](https://www.phila.gov/departments/philadelphia-department-of-prisons/daily-headcount-and-census/) and stored in this repository as data files.
 
+**See it: [st215.github.io/JailJawn](https://st215.github.io/JailJawn/)** — one glyph for every person held, a timeline you can scrub, and what the numbers say.
+
 The city publishes one day at a time and does not include this data in its open data portal. This repository is the history. It started as a civic hackathon project with the City of Philadelphia and a way to learn Python; the city gave permission to collect the page.
 
 ## The data
@@ -48,6 +50,17 @@ uv run pytest                       # run the tests
 ```
 
 `jailjawn backfill` re-parses every capture in `debug/` and writes a proof report to `build/`. It was used once, for 2.0.0, and is kept in case the parser ever changes again.
+
+## The site
+
+`site/` is a static page with no build step. It fetches `census.csv` from this repository when it loads, so it is always current, and falls back to the copy deployed with it. The crowd on the front page is laid out with [pretext](https://github.com/chenglou/pretext), vendored in `site/vendor/`. GitHub Pages deploys it whenever `site/` changes on master.
+
+To work on it locally:
+
+```bash
+python3 -m http.server 8000 --directory site
+# then open http://localhost:8000/
+```
 
 ## History
 
