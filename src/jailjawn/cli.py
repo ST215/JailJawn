@@ -4,7 +4,8 @@
     jailjawn scrape --html F   same, but parse a saved page instead of fetching
     jailjawn validate FILE...  run the checks against stored JSON records
     jailjawn backfill          re-parse debug/ snapshots and write a proof report
-    jailjawn export            rebuild census.csv from data/
+    jailjawn export            rebuild census.csv and the feeds from data/
+    jailjawn legacy            convert the 2013-2017 Firebase export in legacy/
 
 Exit codes: 0 success or nothing new, 1 validation refused the data,
 2 the page could not be fetched.
@@ -27,6 +28,7 @@ from jailjawn.store import (
     REPO_ROOT,
     dump_record,
     export_csv,
+    export_feeds,
     latest_record,
     load_record,
     record_path,
@@ -86,6 +88,8 @@ def cmd_scrape(args: argparse.Namespace) -> int:
     write_raw(html, census_date, args.raw_dir)
     dump_record(record, existing_path)
     rows = export_csv(args.data_dir, args.csv)
+    if args.data_dir == DATA_DIR:
+        export_feeds(args.data_dir)
     log.info("stored census for %s; census.csv now has %d rows", census_date, rows)
     return 0
 
@@ -143,6 +147,19 @@ def cmd_backfill(args: argparse.Namespace) -> int:
 def cmd_export(args: argparse.Namespace) -> int:
     rows = export_csv(args.data_dir, args.csv)
     print(f"wrote {rows} rows to {args.csv}")
+    if args.data_dir == DATA_DIR:
+        entries = export_feeds(args.data_dir)
+        print(f"wrote feed.xml, feed.json ({entries} entries) and latest.json")
+    return 0
+
+
+def cmd_legacy(args: argparse.Namespace) -> int:
+    from jailjawn import legacy
+
+    rows, days = legacy.run()
+    print(
+        f"wrote {rows} rows for {days} days to {legacy.LONG_CSV.name} and {legacy.SUMMARY_CSV.name}"
+    )
     return 0
 
 
@@ -178,8 +195,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p.set_defaults(func=cmd_backfill)
 
-    p = sub.add_parser("export", help="rebuild census.csv")
+    p = sub.add_parser("export", help="rebuild census.csv and the feeds")
     p.set_defaults(func=cmd_export)
+
+    p = sub.add_parser(
+        "legacy", help="convert the 2013-2017 Firebase export in legacy/"
+    )
+    p.set_defaults(func=cmd_legacy)
     return parser
 
 
