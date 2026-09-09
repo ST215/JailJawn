@@ -2,14 +2,17 @@ name: Daily Scrape
 
 on:
   schedule:
-    - cron: "0 12 * * *" # Run at 12:00 UTC (7:00 AM EST) daily
+    # Twice daily. Scheduled runs on shared runners start 30 to 90 minutes
+    # late; the second pass catches a late census post. The scraper exits
+    # without committing when the census date is already stored.
+    - cron: "0 12 * * *" # 12:00 UTC, 8:00 AM Philadelphia (EDT)
+    - cron: "0 18 * * *" # 18:00 UTC, 2:00 PM Philadelphia (EDT)
   workflow_dispatch: # Allow manual trigger
-  push:
-    branches:
-      - main
-      - master
-      - "feature/**"
-      - "fix/**"
+
+# Never run two scrapes at once; they would race on the push.
+concurrency:
+  group: scrape
+  cancel-in-progress: false
 
 permissions:
   contents: write
