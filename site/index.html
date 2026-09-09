@@ -126,6 +126,18 @@
   .pick .hint { font-size: 12px; color: var(--ink-3); }
   @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
 
+  .readout { background: var(--surface); border: 1px solid var(--grid); border-radius: 8px; padding: 14px 16px; }
+  .readout .date { font-size: 14px; color: var(--ink-2); }
+  .readout .big { font-family: var(--display); font-weight: 700; font-size: clamp(44px, 7vw, 84px); line-height: 0.95; letter-spacing: -0.025em; font-variant-numeric: tabular-nums; }
+  .readout .big small { font: 500 clamp(13px, 1.4vw, 16px) var(--body); color: var(--ink-3); letter-spacing: 0; margin-left: 8px; }
+  .readout .change { font-size: 14px; color: var(--ink-2); margin-top: 6px; }
+  .readout .change b { color: var(--ink); font-weight: 600; }
+  .readout .cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 14px; margin-top: 14px; }
+  .readout .cat { display: grid; grid-template-columns: 22px auto; gap: 2px 8px; align-items: baseline; font-size: 12.5px; color: var(--ink-3); }
+  .readout .cat .ms { grid-row: span 2; align-self: center; }
+  .readout .cat b { font-family: var(--display); font-weight: 700; font-size: 22px; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1; }
+  .readout .gap { margin-top: 12px; padding: 10px 12px; background: var(--surface-2); border-left: 3px solid var(--accent); border-radius: 4px; font-size: 14px; color: var(--ink-2); }
+  .readout .gap b { color: var(--ink); }
   .compare { margin-top: 12px; background: var(--surface); border: 1px solid var(--grid); border-radius: 8px; padding: 14px 16px; display: none; }
   .compare.on { display: block; }
   .compare p { color: var(--ink-2); }
@@ -226,7 +238,8 @@
   <section class="hero" aria-labelledby="hero-h1">
     <div class="eyebrow" id="hero-eyebrow">Philadelphia Department of Prisons · daily census</div>
     <h1 id="hero-h1">Loading the census…</h1>
-    <p class="sub" id="hero-sub">Every figure below is one person counted that day. Press play to watch the years go by, drag the timeline, or pick a date.</p>
+    <div class="eyebrow" id="hero-eyebrow-date" style="margin-top:12px;color:var(--ink-2)"></div>
+    <p class="sub" id="hero-sub">Every symbol below is one person counted that day. The timeline underneath walks through every day on record.</p>
 
     <div class="stage">
       <div class="top">
@@ -234,15 +247,20 @@
           <div class="date" id="st-date">&nbsp;</div>
           <div class="big"><span id="st-total">&nbsp;</span><small>people</small></div>
         </div>
-        <div class="change" id="st-change"></div>
       </div>
-      <canvas id="wall" role="img" aria-label="One symbol for every person held on the selected day"></canvas>
-      <div class="caption" id="caption"></div>
+      <canvas id="wall" role="img" aria-label="Symbols for every person held on the latest census day"></canvas>
       <div class="legend" id="legend"></div>
       <div class="frame-note" id="frame-note"></div>
     </div>
 
     <div class="controls">
+      <div class="readout" id="readout">
+        <div class="date" id="ro-date">&nbsp;</div>
+        <div class="big"><span id="ro-total" data-value="0">0</span><small>people</small></div>
+        <div class="change" id="ro-change"></div>
+        <div class="cats" id="ro-cats"></div>
+        <div class="gap" id="caption" hidden></div>
+      </div>
       <div class="row">
         <div class="btns">
           <button class="btn" id="play" type="button">Play from 2013</button>
@@ -287,7 +305,7 @@
       <div id="chart-kids"></div>
       <div class="tip" id="tip-kids"></div>
     </div>
-    <p class="lede" style="margin-top:16px">Press <strong>Show the children</strong> above the timeline to find them in the crowd.</p>
+    <p class="lede" style="margin-top:16px">Press <strong>Show the children</strong> above the timeline to find them in the latest crowd.</p>
   </section>
 
   <section id="long" aria-labelledby="long-h">
@@ -431,5 +449,6 @@
 }
 </script>
 <script type="module" src="./app.js"></script>
+<script data-goatcounter="https://jailjawn.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
