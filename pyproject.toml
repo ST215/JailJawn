@@ -1,6 +1,6 @@
 [project]
 name = "jailjawn"
-version = "2.0.0"
+version = "2.1.0"
 description = "Collects the Philadelphia Department of Prisons daily headcount and census into a git repository."
 readme = "README.md"
 requires-python = ">=3.13"

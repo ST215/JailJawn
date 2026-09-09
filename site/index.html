@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JailJawn</title>
+<meta name="description" content="Every person held by the Philadelphia Department of Prisons, counted every day since March 2025.">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="JailJawn">
+<meta property="og:description" content="Every person held by the Philadelphia Department of Prisons, counted every day.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --page: #0f1317;
+    --surface: #171c21;
+    --surface-2: #1e252b;
+    --ink: #eef1f3;
+    --ink-2: #aab5bd;
+    --ink-3: #75828c;
+    --grid: #262e35;
+    --axis: #3a444d;
+    --accent: #f0b453;      /* women in the wall, highlights */
+    --men: #eef1f3;
+    --juv: #d55181;         /* magenta slot */
+    --hosp: #199e70;        /* aqua slot */
+    --trip: #d95926;        /* orange slot */
+    --away: #5598e7;        /* held elsewhere */
+    --s1: #3987e5;  /* CFCF */
+    --s2: #d95926;  /* DC */
+    --s3: #199e70;  /* DC PHSW */
+    --s4: #c98500;  /* PICC */
+    --s5: #d55181;  /* RCF */
+    --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    --body: "Public Sans", "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--page); }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font-family: var(--body); font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--ink); text-decoration-color: var(--ink-3); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: -0.015em; }
+  h2 { font-size: clamp(26px, 3.6vw, 38px); }
+  h3 { font-size: 19px; font-weight: 700; letter-spacing: 0; }
+  p { margin: 0 0 14px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  .prose { max-width: 62ch; color: var(--ink-2); }
+  .prose strong { color: var(--ink); font-weight: 600; }
+  .mono { font-family: var(--mono); }
+  .num { font-variant-numeric: tabular-nums; }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+
+  /* ---------- masthead ---------- */
+  header.mast { display: flex; justify-content: space-between; align-items: baseline; padding: 22px 0 10px; gap: 16px; flex-wrap: wrap; }
+  header.mast .brand { font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: -0.02em; text-decoration: none; }
+  header.mast nav { display: flex; gap: 18px; font-size: 14px; color: var(--ink-2); }
+  header.mast nav a { color: var(--ink-2); text-decoration: none; }
+  header.mast nav a:hover { color: var(--ink); }
+
+  /* ---------- hero: the wall ---------- */
+  .hero { padding: 18px 0 8px; }
+  .hero h1 { font-size: clamp(34px, 6.5vw, 76px); max-width: 15ch; }
+  .hero h1 .count { color: var(--accent); font-variant-numeric: proportional-nums; }
+  .hero .sub { color: var(--ink-2); font-size: clamp(15px, 1.6vw, 19px); max-width: 58ch; margin-top: 14px; }
+  .wall-frame { position: relative; margin-top: 22px; }
+  #wall { display: block; width: 100%; height: auto; cursor: crosshair; touch-action: pan-y; }
+  .wall-frame .hint { position: absolute; right: 8px; top: -22px; font-size: 12px; color: var(--ink-3); }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; font-size: 13px; color: var(--ink-2); }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .legend b { font-family: var(--body); font-weight: 700; font-size: 15px; width: 12px; text-align: center; }
+  .legend .n { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+  /* ---------- scrubber ---------- */
+  .scrub { margin-top: 18px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--grid); border-radius: 6px;
+           display: grid; grid-template-columns: auto 1fr auto; gap: 14px 18px; align-items: center; }
+  .scrub button { font: 600 14px var(--body); color: var(--ink); background: var(--surface-2); border: 1px solid var(--axis); border-radius: 4px; padding: 8px 14px; cursor: pointer; min-width: 84px; }
+  .scrub button:hover { border-color: var(--ink-3); }
+  .scrub input[type=range] { width: 100%; accent-color: var(--accent); }
+  .scrub .readout { text-align: right; min-width: 200px; }
+  .scrub .readout .d { font-size: 13px; color: var(--ink-2); }
+  .scrub .readout .t { font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -0.02em; }
+  .scrub .readout .t small { font: 500 13px var(--body); color: var(--ink-3); letter-spacing: 0; margin-left: 6px; }
+  @media (max-width: 640px) {
+    .scrub { grid-template-columns: 1fr 1fr; }
+    .scrub input[type=range] { grid-column: 1 / -1; grid-row: 2; }
+    .scrub .readout { min-width: 0; }
+  }
+
+  /* ---------- sections ---------- */
+  section { padding: 56px 0 8px; }
+  section > .wrap > h2 { margin-bottom: 10px; }
+  .lede { color: var(--ink-2); max-width: 62ch; font-size: 17px; }
+  .chart-card { background: var(--surface); border: 1px solid var(--grid); border-radius: 6px; padding: 16px 16px 10px; margin-top: 22px; position: relative; }
+  .chart-card h3 { margin-bottom: 2px; }
+  .chart-card .sub { font-size: 13px; color: var(--ink-3); margin-bottom: 10px; }
+  .chart-card svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .chart-card svg text { font-family: var(--body); font-size: 12px; fill: var(--ink-3); }
+  .chart-card svg .tick { font-variant-numeric: tabular-nums; }
+  .chart-card svg .lab { fill: var(--ink-2); font-weight: 600; }
+  .chart-card svg .lab.strong { fill: var(--ink); font-size: 13px; }
+  .tip { position: absolute; pointer-events: none; background: var(--surface-2); border: 1px solid var(--axis); border-radius: 4px; padding: 6px 9px; font-size: 12px; color: var(--ink-2); white-space: nowrap; transform: translate(-50%, -100%); display: none; z-index: 2; }
+  .tip b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .multiples { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-top: 14px; }
+  .multiple { background: var(--surface-2); border-radius: 4px; padding: 12px 12px 8px; }
+  .multiple .name { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--ink); }
+  .multiple .name i { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+  .multiple .delta { font-size: 12px; color: var(--ink-3); margin: 2px 0 6px; font-variant-numeric: tabular-nums; }
+  .legend-row { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-2); margin-top: 10px; }
+  .legend-row span { display: inline-flex; align-items: center; gap: 7px; }
+  .legend-row i { width: 10px; height: 10px; border-radius: 2px; }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 22px; }
+  .tile { background: var(--surface); border: 1px solid var(--grid); border-radius: 6px; padding: 14px 16px 12px; }
+  .tile .label { font-size: 13px; color: var(--ink-2); }
+  .tile .value { font-family: var(--display); font-weight: 700; font-size: 40px; line-height: 1.05; letter-spacing: -0.02em; margin-top: 4px; }
+  .tile .value small { font: 500 13px var(--body); color: var(--ink-3); letter-spacing: 0; margin-left: 4px; }
+  .tile .foot { font-size: 12px; color: var(--ink-3); margin-top: 6px; }
+
+  .findings { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 22px; }
+  .finding { background: var(--surface); border: 1px solid var(--grid); border-radius: 6px; padding: 16px 18px; }
+  .finding .big { font-family: var(--display); font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .finding .big em { font-style: normal; color: var(--accent); }
+  .finding p { color: var(--ink-2); font-size: 14.5px; margin: 0; }
+
+  details.table { margin-top: 22px; background: var(--surface); border: 1px solid var(--grid); border-radius: 6px; }
+  details.table summary { cursor: pointer; padding: 14px 16px; font-weight: 600; }
+  details.table .inner { padding: 0 16px 16px; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; margin-top: 10px; }
+  caption { text-align: left; font-weight: 600; padding: 12px 0 6px; color: var(--ink); }
+  th, td { text-align: right; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; }
+  th:first-child, td:first-child { text-align: left; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); font-weight: 600; }
+  td:first-child { color: var(--ink-2); }
+
+  footer { padding: 56px 0 60px; color: var(--ink-3); font-size: 14px; }
+  footer .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  footer h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-2); margin-bottom: 8px; font-family: var(--body); font-weight: 600; }
+  footer p { margin: 0 0 8px; }
+  #status { color: var(--ink-3); font-size: 13px; margin-top: 8px; min-height: 1.4em; }
+
+  @media (prefers-reduced-motion: reduce) { #wall { cursor: default; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <a class="brand" href="./">JailJawn</a>
+    <nav>
+      <a href="#trend">Trend</a>
+      <a href="#facilities">Facilities</a>
+      <a href="#findings">Findings</a>
+      <a href="#data">Data</a>
+      <a href="https://github.com/ST215/JailJawn">GitHub</a>
+    </nav>
+  </header>
+
+  <section class="hero" style="padding-top:8px">
+    <div class="eyebrow" id="hero-eyebrow">Philadelphia Department of Prisons · daily census</div>
+    <h1 id="hero-h1">Loading the census…</h1>
+    <p class="sub" id="hero-sub">Each mark below is one person held by the city on that day. Drag across the timeline to watch the count change over every day we've recorded.</p>
+
+    <div class="wall-frame">
+      <span class="hint" id="wall-hint">move your pointer through the crowd</span>
+      <canvas id="wall" aria-label="One glyph for every person held on the selected day" role="img"></canvas>
+    </div>
+    <div class="legend" id="legend" aria-hidden="true"></div>
+
+    <div class="scrub">
+      <button id="play" type="button" aria-label="Play through every day">Play</button>
+      <input id="day" type="range" min="0" max="0" value="0" aria-label="Census day">
+      <div class="readout">
+        <div class="d" id="ro-date">&nbsp;</div>
+        <div class="t"><span id="ro-total">&nbsp;</span><small>people</small></div>
+      </div>
+    </div>
+    <div id="status"></div>
+  </section>
+
+  <section id="trend">
+    <div class="wrap" style="padding:0">
+      <h2>Fewer people, most days</h2>
+      <p class="lede" id="trend-lede"></p>
+      <div class="chart-card">
+        <h3>Total people held by the Philadelphia Department of Prisons</h3>
+        <div class="sub">Every census day recorded. Breaks are days the city did not post or the scraper missed.</div>
+        <div id="chart-total"></div>
+        <div class="tip" id="tip-total"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="facilities">
+    <div class="wrap" style="padding:0">
+      <h2>Five buildings, one shrinking, one steady</h2>
+      <p class="lede" id="fac-lede"></p>
+      <div class="chart-card">
+        <h3>People each facility is responsible for</h3>
+        <div class="sub">In the building plus temporarily out. Each panel has its own scale; the labels give first and latest counts.</div>
+        <div class="legend-row" id="fac-legend"></div>
+        <div class="multiples" id="chart-fac"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rhythm">
+    <div class="wrap" style="padding:0">
+      <h2>The jail breathes with the week</h2>
+      <p class="lede" id="dow-lede"></p>
+      <div class="chart-card">
+        <h3>Average count by day of the week, as difference from the overall average</h3>
+        <div class="sub">People arrested over a weekend wait for a Monday hearing. The building fills on Sunday and empties by midweek.</div>
+        <div id="chart-dow"></div>
+        <div class="tip" id="tip-dow"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="elsewhere">
+    <div class="wrap" style="padding:0">
+      <h2>Counted, but not in the building</h2>
+      <p class="lede">The census also tracks people a facility is responsible for who are somewhere else at the moment of the count. Averages across every day recorded.</p>
+      <div class="tiles" id="tiles"></div>
+    </div>
+  </section>
+
+  <section id="findings">
+    <div class="wrap" style="padding:0">
+      <h2>Things the numbers keep saying</h2>
+      <p class="lede">Computed from the whole dataset each time this page loads, so they stay true as days are added.</p>
+      <div class="findings" id="findings-grid"></div>
+    </div>
+  </section>
+
+  <section id="data">
+    <div class="wrap" style="padding:0">
+      <h2>The data</h2>
+      <p class="lede">One CSV, one row per census day, 164 columns. One JSON file per day with the five tables as the city published them. Every file is committed to a public repository the morning it is captured.</p>
+      <p><a href="https://github.com/ST215/JailJawn/blob/master/census.csv">census.csv on GitHub</a> · <a href="https://github.com/ST215/JailJawn/blob/master/SCHEMA.md">Schema</a> · <a href="https://github.com/ST215/JailJawn/tree/master/data">Daily JSON</a></p>
+      <details class="table">
+        <summary id="table-summary">The latest census as a table</summary>
+        <div class="inner" id="table-inner"></div>
+      </details>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap cols">
+    <div>
+      <h3>Source</h3>
+      <p>The <a href="https://www.phila.gov/departments/philadelphia-department-of-prisons/daily-headcount-and-census/">Philadelphia Department of Prisons daily census page</a>, collected with the city's permission. The city posts one day at a time and does not include this data in its open data portal.</p>
+    </div>
+    <div>
+      <h3>Method</h3>
+      <p>A scheduled job opens the page in a headless browser twice a day, parses the five tables, checks the arithmetic and the date, and commits the result. Nothing is stored unless it passes. <a href="https://github.com/ST215/JailJawn">Code and history on GitHub.</a></p>
+    </div>
+    <div>
+      <h3>About</h3>
+      <p>Started as a civic hackathon project and a way to learn Python. Built and maintained by <a href="http://www.StanleyGriggs.com/">Stanley Griggs</a>. The crowd on this page is laid out with <a href="https://github.com/chenglou/pretext">pretext</a>.</p>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>
