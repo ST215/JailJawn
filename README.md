@@ -14,6 +14,8 @@ The city publishes one day at a time and does not include this data in its open 
 | `data/YYYY-MM-DD.json` | One record per census day with the five tables from the page. |
 | `raw/YYYY-MM-DD.html` | The page as captured, so any day can be re-parsed. |
 | `debug/` | Page captures from before 2.0.0. Kept as the archive those days were re-parsed from. |
+| `legacy/` | The 2013–2017 census from the project's first scraper, 138 days, converted from its Firebase export. See [legacy/README.md](legacy/README.md). |
+| `feed.xml`, `feed.json`, `latest.json` | Subscribe to new census days. See [SCHEMA.md](SCHEMA.md#feeds). |
 
 The file name is the census date printed on the page, not the day it was collected. See [SCHEMA.md](SCHEMA.md) for every field, what a blank cell means, and which checks each record has passed.
 
@@ -68,6 +70,8 @@ python3 -m http.server 8000 --directory site
 - **1.1.0** fixed a timeout that had started failing the daily run.
 - **2.0.0** rewrote the parser, corrected a table-mapping bug present in every earlier file, re-parsed the full history from the saved pages, added validation, the CSV, tests, and the raw archive. The release notes carry the backfill report.
 
-## Contact
+## Contact and credits
 
 Stanley Griggs, [stanleygriggs.com](http://www.StanleyGriggs.com/), [@ST215](http://www.twitter.com/ST215). Issues and pull requests are welcome.
+
+Everyone who has contributed since the 2013 hackathon, across every repository the project has lived in, is listed in [CONTRIBUTORS.md](CONTRIBUTORS.md).

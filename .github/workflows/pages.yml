@@ -28,12 +28,14 @@ jobs:
       - uses: actions/checkout@v6
 
       # The page fetches census.csv from the repository at load time so it is
-      # always current; the copy bundled here is the fallback if that fails.
+      # always current; the copies bundled here are the fallback. The feeds
+      # are served from here, so the scrape workflow redeploys after a commit.
       - name: Assemble site
         run: |
-          mkdir -p _site
+          mkdir -p _site/legacy
           cp -r site/. _site/
-          cp census.csv _site/census.csv
+          cp census.csv feed.xml feed.json latest.json _site/
+          cp legacy/summary.csv _site/legacy/summary.csv
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4

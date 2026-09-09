@@ -16,6 +16,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write # to redeploy the site after a data commit
 
 jobs:
   scrape:
@@ -43,7 +44,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/ raw/ census.csv
+          git add data/ raw/ census.csv feed.xml feed.json latest.json
           if git diff --cached --quiet; then
             echo "No new census to commit."
             exit 0
@@ -51,3 +52,13 @@ jobs:
           census=$(git diff --cached --name-only -- data/ | sed -E 's#data/(.*)\.json#\1#' | head -1)
           git commit -m "data: census for ${census}"
           git push origin HEAD:${{ github.ref_name }}
+          echo "deployed=true" >> "$GITHUB_OUTPUT"
+        id: commit
+
+      # Pushes made with GITHUB_TOKEN do not trigger other workflows, so the
+      # site (which serves the feeds) is redeployed by hand here.
+      - name: Redeploy the site
+        if: steps.commit.outputs.deployed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref ${{ github.ref_name }}

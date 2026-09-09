@@ -23,6 +23,11 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = REPO_ROOT / "data"
 RAW_DIR = REPO_ROOT / "raw"
 CSV_PATH = REPO_ROOT / "census.csv"
+FEED_XML = REPO_ROOT / "feed.xml"
+FEED_JSON = REPO_ROOT / "feed.json"
+LATEST_JSON = REPO_ROOT / "latest.json"
+SITE_URL = "https://st215.github.io/JailJawn/"
+FEED_ENTRIES = 30
 
 # Short, stable identifiers for CSV column names.
 ROW_KEYS = {
@@ -145,3 +150,120 @@ def export_csv(data_dir: Path = DATA_DIR, csv_path: Path = CSV_PATH) -> int:
         writer.writeheader()
         writer.writerows(rows)
     return len(rows)
+
+
+# ---------------------------------------------------------------- feeds
+
+
+def _total(record: dict, table: str, label_col: str, label: str, col: str):
+    for row in record.get("facilities", {}).get(table, []):
+        if row.get(label_col) == label:
+            return row.get(col)
+    return None
+
+
+def _summary_lines(record: dict) -> list[str]:
+    from jailjawn.validate import FACILITIES
+
+    lines = []
+    total = _total(record, "total_population", "Category", "Total", "Total")
+    males = _total(record, "total_population", "Category", "Total", "Males")
+    females = _total(record, "total_population", "Category", "Total", "Females")
+    lines.append(f"Total: {total:,} people ({males:,} men, {females:,} women)")
+    for fac in FACILITIES:
+        t = _total(record, "facility_totals", "Facility", fac, "Total")
+        if t:
+            lines.append(f"{fac}: {t:,}")
+    oj = _total(record, "other_jurisdictions", "Jurisdiction", "Total", "Total")
+    lines.append(f"Held by other jurisdictions: {oj or 0:,}")
+    if record.get("warnings"):
+        lines.append("Note: the published figures did not add up on this day.")
+    return lines
+
+
+def _long_date(iso: str) -> str:
+    from datetime import date
+
+    return date.fromisoformat(iso).strftime("%A, %B %-d, %Y")
+
+
+def export_feeds(
+    data_dir: Path = DATA_DIR,
+    *,
+    xml_path: Path = FEED_XML,
+    json_path: Path = FEED_JSON,
+    latest_path: Path = LATEST_JSON,
+    site_url: str = SITE_URL,
+) -> int:
+    """Write an Atom feed, a JSON Feed and latest.json from the newest records."""
+    import html
+    from datetime import datetime, timezone
+
+    records = [rec for _, rec in all_records(data_dir)][-FEED_ENTRIES:]
+    records.reverse()
+    if not records:
+        return 0
+    updated = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    def entry_id(rec):
+        return f"{site_url}#{rec['census_date']}"
+
+    xml = [
+        '<?xml version="1.0" encoding="utf-8"?>',
+        '<feed xmlns="http://www.w3.org/2005/Atom">',
+        "  <title>JailJawn: Philadelphia daily jail census</title>",
+        f'  <link href="{site_url}"/>',
+        f'  <link rel="self" href="{site_url}feed.xml"/>',
+        f"  <id>{site_url}</id>",
+        f"  <updated>{updated}</updated>",
+        "  <author><name>JailJawn</name></author>",
+        "  <subtitle>How many people the Philadelphia Department of Prisons held each day.</subtitle>",
+    ]
+    items = []
+    for rec in records:
+        total = _total(rec, "total_population", "Category", "Total", "Total")
+        title = f"{_long_date(rec['census_date'])}: {total:,} people"
+        lines = _summary_lines(rec)
+        published = rec["census_date"] + "T00:00:00Z"
+        captured = rec.get("timestamp", "")
+        xml += [
+            "  <entry>",
+            f"    <title>{html.escape(title)}</title>",
+            f'    <link href="{entry_id(rec)}"/>',
+            f"    <id>{entry_id(rec)}</id>",
+            f"    <published>{published}</published>",
+            f"    <updated>{published}</updated>",
+            f"    <summary>{html.escape('. '.join(lines))}</summary>",
+            "  </entry>",
+        ]
+        items.append(
+            {
+                "id": entry_id(rec),
+                "url": entry_id(rec),
+                "title": title,
+                "content_text": "\n".join(lines),
+                "date_published": published,
+                "_jailjawn": {
+                    "census_date": rec["census_date"],
+                    "total": total,
+                    "captured": captured,
+                },
+            }
+        )
+    xml.append("</feed>")
+    xml_path.write_text("\n".join(xml) + "\n", encoding="utf-8")
+    feed = {
+        "version": "https://jsonfeed.org/version/1.1",
+        "title": "JailJawn: Philadelphia daily jail census",
+        "home_page_url": site_url,
+        "feed_url": site_url + "feed.json",
+        "description": "How many people the Philadelphia Department of Prisons held each day.",
+        "items": items,
+    }
+    json_path.write_text(
+        json.dumps(feed, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+    latest_path.write_text(
+        json.dumps(records[0], indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+    return len(records)

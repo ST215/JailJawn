@@ -1,0 +1,369 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "JailJawn: Philadelphia daily jail census",
+  "home_page_url": "https://st215.github.io/JailJawn/",
+  "feed_url": "https://st215.github.io/JailJawn/feed.json",
+  "description": "How many people the Philadelphia Department of Prisons held each day.",
+  "items": [
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-09-07",
+      "url": "https://st215.github.io/JailJawn/#2026-09-07",
+      "title": "Monday, September 7, 2026: 3,261 people",
+      "content_text": "Total: 3,261 people (3,029 men, 232 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,436\nDetention Center (DC): 360\nDetention Center Public Health Services Wing (DC PHSW): 49\nPhiladelphia Industrial Correctional Center (PICC): 837\nRiverside Correctional Facility (RCF): 411\nHeld by other jurisdictions: 168",
+      "date_published": "2026-09-07T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-09-07",
+        "total": 3261,
+        "captured": "2026-09-09T02:14:33"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-09-06",
+      "url": "https://st215.github.io/JailJawn/#2026-09-06",
+      "title": "Sunday, September 6, 2026: 3,243 people",
+      "content_text": "Total: 3,243 people (3,013 men, 230 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,431\nDetention Center (DC): 359\nDetention Center Public Health Services Wing (DC PHSW): 51\nPhiladelphia Industrial Correctional Center (PICC): 826\nRiverside Correctional Facility (RCF): 408\nHeld by other jurisdictions: 168",
+      "date_published": "2026-09-06T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-09-06",
+        "total": 3243,
+        "captured": "2026-09-07T17:02:14"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-09-05",
+      "url": "https://st215.github.io/JailJawn/#2026-09-05",
+      "title": "Saturday, September 5, 2026: 3,226 people",
+      "content_text": "Total: 3,226 people (2,996 men, 230 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,431\nDetention Center (DC): 346\nDetention Center Public Health Services Wing (DC PHSW): 50\nPhiladelphia Industrial Correctional Center (PICC): 822\nRiverside Correctional Facility (RCF): 408\nWeekenders: 1\nHeld by other jurisdictions: 168",
+      "date_published": "2026-09-05T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-09-05",
+        "total": 3226,
+        "captured": "2026-09-06T14:45:23"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-09-04",
+      "url": "https://st215.github.io/JailJawn/#2026-09-04",
+      "title": "Friday, September 4, 2026: 3,196 people",
+      "content_text": "Total: 3,196 people (2,974 men, 222 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,429\nDetention Center (DC): 352\nDetention Center Public Health Services Wing (DC PHSW): 41\nPhiladelphia Industrial Correctional Center (PICC): 816\nRiverside Correctional Facility (RCF): 388\nWeekenders: 1\nHeld by other jurisdictions: 169",
+      "date_published": "2026-09-04T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-09-04",
+        "total": 3196,
+        "captured": "2026-09-05T14:23:29"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-09-03",
+      "url": "https://st215.github.io/JailJawn/#2026-09-03",
+      "title": "Thursday, September 3, 2026: 3,182 people",
+      "content_text": "Total: 3,182 people (2,959 men, 223 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,423\nDetention Center (DC): 346\nDetention Center Public Health Services Wing (DC PHSW): 47\nPhiladelphia Industrial Correctional Center (PICC): 814\nRiverside Correctional Facility (RCF): 383\nHeld by other jurisdictions: 169",
+      "date_published": "2026-09-03T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-09-03",
+        "total": 3182,
+        "captured": "2026-09-04T15:35:42"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-09-02",
+      "url": "https://st215.github.io/JailJawn/#2026-09-02",
+      "title": "Wednesday, September 2, 2026: 3,178 people",
+      "content_text": "Total: 3,178 people (2,953 men, 225 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,420\nDetention Center (DC): 343\nDetention Center Public Health Services Wing (DC PHSW): 47\nPhiladelphia Industrial Correctional Center (PICC): 818\nRiverside Correctional Facility (RCF): 381\nHeld by other jurisdictions: 169",
+      "date_published": "2026-09-02T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-09-02",
+        "total": 3178,
+        "captured": "2026-09-03T15:36:59"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-09-01",
+      "url": "https://st215.github.io/JailJawn/#2026-09-01",
+      "title": "Tuesday, September 1, 2026: 3,180 people",
+      "content_text": "Total: 3,180 people (2,952 men, 228 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,418\nDetention Center (DC): 343\nDetention Center Public Health Services Wing (DC PHSW): 50\nPhiladelphia Industrial Correctional Center (PICC): 822\nRiverside Correctional Facility (RCF): 378\nHeld by other jurisdictions: 169",
+      "date_published": "2026-09-01T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-09-01",
+        "total": 3180,
+        "captured": "2026-09-02T15:47:40"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-31",
+      "url": "https://st215.github.io/JailJawn/#2026-08-31",
+      "title": "Monday, August 31, 2026: 3,195 people",
+      "content_text": "Total: 3,195 people (2,968 men, 227 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,420\nDetention Center (DC): 340\nDetention Center Public Health Services Wing (DC PHSW): 51\nPhiladelphia Industrial Correctional Center (PICC): 832\nRiverside Correctional Facility (RCF): 384\nHeld by other jurisdictions: 168",
+      "date_published": "2026-08-31T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-31",
+        "total": 3195,
+        "captured": "2026-09-01T15:55:14"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-30",
+      "url": "https://st215.github.io/JailJawn/#2026-08-30",
+      "title": "Sunday, August 30, 2026: 3,232 people",
+      "content_text": "Total: 3,232 people (3,002 men, 230 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,432\nDetention Center (DC): 343\nDetention Center Public Health Services Wing (DC PHSW): 53\nPhiladelphia Industrial Correctional Center (PICC): 837\nRiverside Correctional Facility (RCF): 399\nHeld by other jurisdictions: 168",
+      "date_published": "2026-08-30T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-30",
+        "total": 3232,
+        "captured": "2026-08-31T18:35:59"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-29",
+      "url": "https://st215.github.io/JailJawn/#2026-08-29",
+      "title": "Saturday, August 29, 2026: 3,210 people",
+      "content_text": "Total: 3,210 people (2,981 men, 229 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,427\nDetention Center (DC): 341\nDetention Center Public Health Services Wing (DC PHSW): 50\nPhiladelphia Industrial Correctional Center (PICC): 827\nRiverside Correctional Facility (RCF): 396\nWeekenders: 1\nHeld by other jurisdictions: 168",
+      "date_published": "2026-08-29T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-29",
+        "total": 3210,
+        "captured": "2026-08-30T15:52:20"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-28",
+      "url": "https://st215.github.io/JailJawn/#2026-08-28",
+      "title": "Friday, August 28, 2026: 3,184 people",
+      "content_text": "Total: 3,184 people (2,963 men, 221 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,419\nDetention Center (DC): 344\nDetention Center Public Health Services Wing (DC PHSW): 45\nPhiladelphia Industrial Correctional Center (PICC): 817\nRiverside Correctional Facility (RCF): 390\nWeekenders: 1\nHeld by other jurisdictions: 168",
+      "date_published": "2026-08-28T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-28",
+        "total": 3184,
+        "captured": "2026-08-29T16:02:59"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-27",
+      "url": "https://st215.github.io/JailJawn/#2026-08-27",
+      "title": "Thursday, August 27, 2026: 3,176 people",
+      "content_text": "Total: 3,176 people (2,948 men, 228 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,404\nDetention Center (DC): 343\nDetention Center Public Health Services Wing (DC PHSW): 43\nPhiladelphia Industrial Correctional Center (PICC): 826\nRiverside Correctional Facility (RCF): 393\nHeld by other jurisdictions: 167",
+      "date_published": "2026-08-27T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-27",
+        "total": 3176,
+        "captured": "2026-08-28T21:38:30"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-26",
+      "url": "https://st215.github.io/JailJawn/#2026-08-26",
+      "title": "Wednesday, August 26, 2026: 3,189 people",
+      "content_text": "Total: 3,189 people (2,958 men, 231 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,418\nDetention Center (DC): 336\nDetention Center Public Health Services Wing (DC PHSW): 38\nPhiladelphia Industrial Correctional Center (PICC): 836\nRiverside Correctional Facility (RCF): 394\nHeld by other jurisdictions: 167",
+      "date_published": "2026-08-26T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-26",
+        "total": 3189,
+        "captured": "2026-08-27T21:35:04"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-25",
+      "url": "https://st215.github.io/JailJawn/#2026-08-25",
+      "title": "Tuesday, August 25, 2026: 3,183 people",
+      "content_text": "Total: 3,183 people (2,960 men, 223 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,416\nDetention Center (DC): 341\nDetention Center Public Health Services Wing (DC PHSW): 40\nPhiladelphia Industrial Correctional Center (PICC): 817\nRiverside Correctional Facility (RCF): 400\nHeld by other jurisdictions: 169",
+      "date_published": "2026-08-25T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-25",
+        "total": 3183,
+        "captured": "2026-08-26T12:38:33"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-24",
+      "url": "https://st215.github.io/JailJawn/#2026-08-24",
+      "title": "Monday, August 24, 2026: 3,194 people",
+      "content_text": "Total: 3,194 people (2,966 men, 228 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,427\nDetention Center (DC): 345\nDetention Center Public Health Services Wing (DC PHSW): 43\nPhiladelphia Industrial Correctional Center (PICC): 819\nRiverside Correctional Facility (RCF): 397\nHeld by other jurisdictions: 163",
+      "date_published": "2026-08-24T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-24",
+        "total": 3194,
+        "captured": "2026-08-25T12:35:15"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-23",
+      "url": "https://st215.github.io/JailJawn/#2026-08-23",
+      "title": "Sunday, August 23, 2026: 3,229 people",
+      "content_text": "Total: 3,229 people (2,999 men, 230 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,437\nDetention Center (DC): 340\nDetention Center Public Health Services Wing (DC PHSW): 45\nPhiladelphia Industrial Correctional Center (PICC): 831\nRiverside Correctional Facility (RCF): 413\nWeekenders: 1\nHeld by other jurisdictions: 162",
+      "date_published": "2026-08-23T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-23",
+        "total": 3229,
+        "captured": "2026-08-24T12:35:33"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-22",
+      "url": "https://st215.github.io/JailJawn/#2026-08-22",
+      "title": "Saturday, August 22, 2026: 3,204 people",
+      "content_text": "Total: 3,204 people (2,977 men, 227 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,435\nDetention Center (DC): 322\nDetention Center Public Health Services Wing (DC PHSW): 43\nPhiladelphia Industrial Correctional Center (PICC): 827\nRiverside Correctional Facility (RCF): 412\nWeekenders: 1\nHeld by other jurisdictions: 164",
+      "date_published": "2026-08-22T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-22",
+        "total": 3204,
+        "captured": "2026-08-23T12:26:10"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-21",
+      "url": "https://st215.github.io/JailJawn/#2026-08-21",
+      "title": "Friday, August 21, 2026: 3,173 people",
+      "content_text": "Total: 3,173 people (2,947 men, 226 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,411\nDetention Center (DC): 324\nDetention Center Public Health Services Wing (DC PHSW): 43\nPhiladelphia Industrial Correctional Center (PICC): 826\nRiverside Correctional Facility (RCF): 405\nHeld by other jurisdictions: 164",
+      "date_published": "2026-08-21T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-21",
+        "total": 3173,
+        "captured": "2026-08-22T12:25:11"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-20",
+      "url": "https://st215.github.io/JailJawn/#2026-08-20",
+      "title": "Thursday, August 20, 2026: 3,167 people",
+      "content_text": "Total: 3,167 people (2,946 men, 221 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,410\nDetention Center (DC): 328\nDetention Center Public Health Services Wing (DC PHSW): 46\nPhiladelphia Industrial Correctional Center (PICC): 824\nRiverside Correctional Facility (RCF): 395\nHeld by other jurisdictions: 164",
+      "date_published": "2026-08-20T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-20",
+        "total": 3167,
+        "captured": "2026-08-21T12:33:19"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-19",
+      "url": "https://st215.github.io/JailJawn/#2026-08-19",
+      "title": "Wednesday, August 19, 2026: 3,166 people",
+      "content_text": "Total: 3,166 people (2,939 men, 227 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,398\nDetention Center (DC): 327\nDetention Center Public Health Services Wing (DC PHSW): 54\nPhiladelphia Industrial Correctional Center (PICC): 831\nRiverside Correctional Facility (RCF): 392\nHeld by other jurisdictions: 164",
+      "date_published": "2026-08-19T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-19",
+        "total": 3166,
+        "captured": "2026-08-20T12:34:20"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-18",
+      "url": "https://st215.github.io/JailJawn/#2026-08-18",
+      "title": "Tuesday, August 18, 2026: 3,199 people",
+      "content_text": "Total: 3,199 people (2,958 men, 241 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,404\nDetention Center (DC): 330\nDetention Center Public Health Services Wing (DC PHSW): 56\nPhiladelphia Industrial Correctional Center (PICC): 843\nRiverside Correctional Facility (RCF): 400\nHeld by other jurisdictions: 166",
+      "date_published": "2026-08-18T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-18",
+        "total": 3199,
+        "captured": "2026-08-19T12:33:01"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-17",
+      "url": "https://st215.github.io/JailJawn/#2026-08-17",
+      "title": "Monday, August 17, 2026: 3,210 people",
+      "content_text": "Total: 3,210 people (2,975 men, 235 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,421\nDetention Center (DC): 341\nDetention Center Public Health Services Wing (DC PHSW): 48\nPhiladelphia Industrial Correctional Center (PICC): 836\nRiverside Correctional Facility (RCF): 406\nHeld by other jurisdictions: 158",
+      "date_published": "2026-08-17T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-17",
+        "total": 3210,
+        "captured": "2026-08-18T12:32:25"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-16",
+      "url": "https://st215.github.io/JailJawn/#2026-08-16",
+      "title": "Sunday, August 16, 2026: 3,233 people",
+      "content_text": "Total: 3,233 people (3,001 men, 232 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,435\nDetention Center (DC): 342\nDetention Center Public Health Services Wing (DC PHSW): 54\nPhiladelphia Industrial Correctional Center (PICC): 834\nRiverside Correctional Facility (RCF): 410\nHeld by other jurisdictions: 158",
+      "date_published": "2026-08-16T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-16",
+        "total": 3233,
+        "captured": "2026-08-17T12:30:31"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-15",
+      "url": "https://st215.github.io/JailJawn/#2026-08-15",
+      "title": "Saturday, August 15, 2026: 3,211 people",
+      "content_text": "Total: 3,211 people (2,985 men, 226 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,436\nDetention Center (DC): 332\nDetention Center Public Health Services Wing (DC PHSW): 50\nPhiladelphia Industrial Correctional Center (PICC): 827\nRiverside Correctional Facility (RCF): 407\nWeekenders: 1\nHeld by other jurisdictions: 158",
+      "date_published": "2026-08-15T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-15",
+        "total": 3211,
+        "captured": "2026-08-16T12:25:45"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-14",
+      "url": "https://st215.github.io/JailJawn/#2026-08-14",
+      "title": "Friday, August 14, 2026: 3,190 people",
+      "content_text": "Total: 3,190 people (2,965 men, 225 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,426\nDetention Center (DC): 327\nDetention Center Public Health Services Wing (DC PHSW): 46\nPhiladelphia Industrial Correctional Center (PICC): 826\nRiverside Correctional Facility (RCF): 405\nRiverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1\nWeekenders: 1\nHeld by other jurisdictions: 158",
+      "date_published": "2026-08-14T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-14",
+        "total": 3190,
+        "captured": "2026-08-15T12:24:15"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-13",
+      "url": "https://st215.github.io/JailJawn/#2026-08-13",
+      "title": "Thursday, August 13, 2026: 3,200 people",
+      "content_text": "Total: 3,200 people (2,975 men, 225 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,430\nDetention Center (DC): 329\nDetention Center Public Health Services Wing (DC PHSW): 47\nPhiladelphia Industrial Correctional Center (PICC): 830\nRiverside Correctional Facility (RCF): 404\nRiverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1\nHeld by other jurisdictions: 159",
+      "date_published": "2026-08-13T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-13",
+        "total": 3200,
+        "captured": "2026-08-14T12:51:17"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-12",
+      "url": "https://st215.github.io/JailJawn/#2026-08-12",
+      "title": "Wednesday, August 12, 2026: 3,184 people",
+      "content_text": "Total: 3,184 people (2,962 men, 222 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,421\nDetention Center (DC): 327\nDetention Center Public Health Services Wing (DC PHSW): 48\nPhiladelphia Industrial Correctional Center (PICC): 822\nRiverside Correctional Facility (RCF): 407\nRiverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1\nHeld by other jurisdictions: 158",
+      "date_published": "2026-08-12T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-12",
+        "total": 3184,
+        "captured": "2026-08-13T12:55:11"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-11",
+      "url": "https://st215.github.io/JailJawn/#2026-08-11",
+      "title": "Tuesday, August 11, 2026: 3,207 people",
+      "content_text": "Total: 3,207 people (2,980 men, 227 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,435\nDetention Center (DC): 327\nDetention Center Public Health Services Wing (DC PHSW): 47\nPhiladelphia Industrial Correctional Center (PICC): 822\nRiverside Correctional Facility (RCF): 416\nRiverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1\nHeld by other jurisdictions: 159",
+      "date_published": "2026-08-11T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-11",
+        "total": 3207,
+        "captured": "2026-08-12T12:54:09"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-10",
+      "url": "https://st215.github.io/JailJawn/#2026-08-10",
+      "title": "Monday, August 10, 2026: 3,211 people",
+      "content_text": "Total: 3,211 people (2,983 men, 228 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,442\nDetention Center (DC): 332\nDetention Center Public Health Services Wing (DC PHSW): 44\nPhiladelphia Industrial Correctional Center (PICC): 821\nRiverside Correctional Facility (RCF): 414\nRiverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1\nHeld by other jurisdictions: 157",
+      "date_published": "2026-08-10T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-10",
+        "total": 3211,
+        "captured": "2026-08-11T12:49:13"
+      }
+    },
+    {
+      "id": "https://st215.github.io/JailJawn/#2026-08-09",
+      "url": "https://st215.github.io/JailJawn/#2026-08-09",
+      "title": "Sunday, August 9, 2026: 3,214 people",
+      "content_text": "Total: 3,214 people (2,985 men, 229 women)\nCurran-Fromhold Correctional Facility (CFCF): 1,443\nDetention Center (DC): 333\nDetention Center Public Health Services Wing (DC PHSW): 46\nPhiladelphia Industrial Correctional Center (PICC): 818\nRiverside Correctional Facility (RCF): 416\nRiverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1\nHeld by other jurisdictions: 157",
+      "date_published": "2026-08-09T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-08-09",
+        "total": 3214,
+        "captured": "2026-08-10T12:53:42"
+      }
+    }
+  ]
+}
