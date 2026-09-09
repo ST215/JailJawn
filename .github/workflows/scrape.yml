@@ -2,14 +2,17 @@ name: Daily Scrape
 
 on:
   schedule:
-    - cron: "0 12 * * *" # Run at 12:00 UTC (7:00 AM EST) daily
+    # Twice daily. Scheduled runs on shared runners start 30 to 90 minutes
+    # late; the second pass catches a late census post. The scraper exits
+    # without committing when the census date is already stored.
+    - cron: "0 12 * * *" # 12:00 UTC, 8:00 AM Philadelphia (EDT)
+    - cron: "0 18 * * *" # 18:00 UTC, 2:00 PM Philadelphia (EDT)
   workflow_dispatch: # Allow manual trigger
-  push:
-    branches:
-      - main
-      - master
-      - "feature/**"
-      - "fix/**"
+
+# Never run two scrapes at once; they would race on the push.
+concurrency:
+  group: scrape
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -17,49 +20,34 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/checkout@v6
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v7
         with:
-          python-version: "3.11"
+          enable-cache: true
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        run: uv sync --locked
 
-      - name: Install Playwright browsers
-        run: |
-          playwright install chromium
-          sudo apt-get update
-          sudo apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libpango-1.0-0 libcairo2 libasound2t64 libatspi2.0-0
+      - name: Install Chromium
+        run: uv run playwright install --with-deps chromium
 
-      - name: Run scraper
+      - name: Scrape the census
         env:
           PYTHONUNBUFFERED: "1"
-        run: |
-          mkdir -p debug data
-          python src/scraper.py
+        run: uv run jailjawn scrape
 
-      - name: Upload debug artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-files
-          path: |
-            debug/
-            data/*.json
-
-      - name: Commit and push if changes
-        if: success()
+      - name: Commit and push new census data
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/ debug/
-          timestamp=$(date -u)
-          git commit -m "Update census data - ${timestamp}" || exit 0
-          git push origin ${{ github.head_ref || github.ref_name }}
+          git add data/ raw/ census.csv
+          if git diff --cached --quiet; then
+            echo "No new census to commit."
+            exit 0
+          fi
+          census=$(git diff --cached --name-only -- data/ | sed -E 's#data/(.*)\.json#\1#' | head -1)
+          git commit -m "data: census for ${census}"
+          git push origin HEAD:${{ github.ref_name }}

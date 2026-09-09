@@ -1,0 +1,37 @@
+name: Tests
+
+on:
+  push:
+    branches: ["**"]
+    paths-ignore:
+      - "data/**"
+      - "raw/**"
+      - "debug/**"
+      - "census.csv"
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Check formatting
+        run: uv run black --check src tests
+
+      - name: Run tests
+        run: uv run pytest -q
+
+      - name: Validate every stored record
+        run: uv run jailjawn validate data/*.json

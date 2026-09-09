@@ -1,158 +1,60 @@
-# JailJawn Scraper
+# JailJawn
 
-This project scrapes daily inmate census data from the Philadelphia Department of Prisons website. It uses Python, Playwright (for fetching dynamic content), and BeautifulSoup (for parsing HTML) to collect the data and save it as JSON files.
+A daily record of how many people are held by the Philadelphia Department of Prisons, collected from the city's [daily headcount and census page](https://www.phila.gov/departments/philadelphia-department-of-prisons/daily-headcount-and-census/) and stored in this repository as data files.
 
-## Project Goal
+The city publishes one day at a time and does not include this data in its open data portal. This repository is the history. It started as a civic hackathon project with the City of Philadelphia and a way to learn Python; the city gave permission to collect the page.
 
-The primary goal of this project is to automatically collect and store historical inmate census data for Philadelphia, making it accessible for analysis and visualization to understand trends over time.
+## The data
 
-## How it Works
+| File | What it holds |
+|---|---|
+| [`census.csv`](census.csv) | One row per census day, every figure as a column. Start here for charts and spreadsheets. |
+| `data/YYYY-MM-DD.json` | One record per census day with the five tables from the page. |
+| `raw/YYYY-MM-DD.html` | The page as captured, so any day can be re-parsed. |
+| `debug/` | Page captures from before 2.0.0. Kept as the archive those days were re-parsed from. |
 
-1. **Fetching**: The scraper uses `Playwright` to load the target webpage ([Philadelphia Department of Prisons - Daily Headcount and Census](https://www.phila.gov/departments/philadelphia-department-of-prisons/daily-headcount-and-census/)). Playwright handles any JavaScript execution required to render the full page content.
-2. **Parsing**: Once the page is loaded, `BeautifulSoup` parses the HTML structure.
-3. **Data Extraction**: The scraper identifies relevant tables and extracts the census data.
-4. **Storage**: The extracted data is saved into a JSON file named with the date of the census (e.g., `YYYY-MM-DD.json`) in the `data/` directory.
-5. **Automation**: A GitHub Actions workflow (`.github/workflows/scrape.yml`) is configured to run the scraper automatically on a schedule (daily at 12:00 UTC) and commit the new data back to the repository.
+The file name is the census date printed on the page, not the day it was collected. See [SCHEMA.md](SCHEMA.md) for every field, what a blank cell means, and which checks each record has passed.
 
-## Core Dependencies
+Coverage runs from 2025-04-04. Days the city did not post, or the scraper missed, are simply absent.
 
-This project relies on the following key Python libraries:
+## How it works
 
-- `playwright`: For browser automation and fetching dynamically rendered web pages.
-- `beautifulsoup4`: For parsing HTML content and extracting data.
-- `python-dotenv`: For managing environment variables.
+A GitHub Actions workflow runs twice a day and:
 
-The full list of dependencies can be found in `requirements.txt`.
+1. Opens the page in headless Chromium. The tables are rendered in the browser by a small app the city hosts, so plain HTTP returns nothing.
+2. Saves the page to `raw/`.
+3. Parses the five tables, identifying each by its exact header row.
+4. Validates the result. The census date must be real and new, every table and row must be present, no cell may be the page's pre-load placeholder, and the total must be plausible. A record that fails is not stored and the run fails loudly.
+5. Writes the JSON record, rebuilds `census.csv`, and commits. If the city has not posted a new day yet, nothing is committed.
 
-## Setup
+Arithmetic that does not close (the city has published figures that did not add up) is stored as a `warnings` field on the record rather than refusing the day.
 
-To run the scraper locally, follow these steps:
+## Running it yourself
 
-1. **Clone the repository:**
-
-   ```bash
-   git clone https://github.com/ST215/JailJawn.git
-   cd JailJawn
-   ```
-
-2. **Create and activate a virtual environment:**
-
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
-
-3. **Install dependencies:**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Install Playwright browsers:**
-   ```bash
-   playwright install chromium
-   ```
-
-## Usage
-
-To run the scraper manually:
+Requires [uv](https://docs.astral.sh/uv/).
 
 ```bash
-python src/scraper.py
+git clone https://github.com/ST215/JailJawn.git
+cd JailJawn
+uv sync
+uv run playwright install chromium
+
+uv run jailjawn scrape              # fetch today's census and store it
+uv run jailjawn scrape --dry-run    # fetch and validate, write nothing
+uv run jailjawn scrape --html raw/2026-09-07.html   # parse a saved page
+uv run jailjawn validate data/*.json                # re-check stored records
+uv run jailjawn export              # rebuild census.csv from data/
+uv run pytest                       # run the tests
 ```
 
-The script will:
+`jailjawn backfill` re-parses every capture in `debug/` and writes a proof report to `build/`. It was used once, for 2.0.0, and is kept in case the parser ever changes again.
 
-- Fetch the latest data from the website
-- Save the data in the `data/` directory
-- Save debug information (HTML snapshot and screenshot) in the `debug/` directory
+## History
 
-## Data Storage
-
-The scraper saves data in the following structure:
-
-- `data/`: Contains JSON files with census data, named by date (e.g., `2024-04-06.json`)
-- `debug/`: Contains HTML snapshots and screenshots for debugging purposes
-
-## Contributing
-
-Contributions are welcome! If you find issues or have suggestions for improvements, please feel free to:
-
-1. **Open an issue:** Describe the bug or enhancement request.
-2. **Submit a pull request:** Fork the repository, make your changes on a feature branch, and submit a pull request for review.
+- **1.0.0** is the last hand-written version, tagged as a record of the original project.
+- **1.1.0** fixed a timeout that had started failing the daily run.
+- **2.0.0** rewrote the parser, corrected a table-mapping bug present in every earlier file, re-parsed the full history from the saved pages, added validation, the CSV, tests, and the raw archive. The release notes carry the backfill report.
 
 ## Contact
 
-For questions or comments, you can reach out to Stanley Griggs:
-
-- Website: [http://www.StanleyGriggs.com/](http://www.StanleyGriggs.com/)
-- Twitter: [@ST215](http://www.twitter.com/ST215)
-
----
-
-_Previous project information (may be outdated):_
-
-_The project initially involved deploying the scraper to AWS Lambda and storing data in Google Firebase, with a separate API and web app. These components are not part of the current simplified setup in this repository but may exist in related repositories:_
-
-- _API: https://github.com/JailJawn/JailJawnAPI_
-- _WebApp / Site: https://github.com/JailJawn/jailjawnapp_
-
-# Jail Jawn
-
-Data Source: (http://www.phila.gov/prisons/page.htm)
-
-## What is Jail Jawn and Why?
-
-This is the repository for the JailJawn.com scraper code written in Python. This started as a project to learn Python and Serverless deployment.
-
-The following code in the repository accesses the static page provided by The City of Philadelphia Department of Prisons Census page (http://www.phila.gov/prisons/page.htm). This web page is generated internally possible by a human at infrequent times using Excel to HTML which doesn't create clean tables for scraping which requires a custom solution which as been implemented.
-
-The Python code is deployed to Amazon Web Services Lambda running on a daily CRON job. Once the data is scraped via AWS Lambda it is pushed to our Google Firebase instance for permanent storage.
-
-From the Google Firebase instance, we use Heroku to push the data API to the web using Javascript to render the charts on the client side.
-
-The repositories for the those are located here:
-API: https://github.com/JailJawn/JailJawnAPI
-WebApp / Site: https://github.com/JailJawn/jailjawnapp
-
-Any questions I can be found on
-Website: http://www.StanleyGriggs.com/
-
-Twitter: http://www.twitter.com/ST215
-
-Feel free to make issue tickets and suggestions.
-
-## Goal
-
-Historical Inmate Data, Beautiful Charts, and The Ability see trends over time.
-
-## Tech:
-
-Python Requests (http://docs.python-requests.org/en/latest/)
-Python lxml (http://lxml.de/)
-
-## Steps to run on Windows
-
-#### Download Python
-
-    1. http://docs.python-requests.org/en/latest/user/install/#install
-
-#### Set up Python Path
-
-    1. Open Control Panel
-    2. Go To Security and Systems
-    3. Go to System
-    4. Open Advanced System Settings
-    5. Go to the "Advanced" tab and open Environmental Variables
-    6. Scoll down to "Path" in System Variables and then double-click
-    7. Add the local address of your Python library to the Variable Value field (For example: C:\Python27)
-    	-If there are any other paths in the field then seperate them with a semicolon (For example C:\Java_lib;C:\Python27)
-
-####Download Requests
-
-    1. clone git://github.com/kennethreitz/requests.git
-    2. Open terminal and run python setup.py install
-
-#### Download lxml
-
-    1. https://pypi.python.org/pypi/lxml/3.2.3
+Stanley Griggs, [stanleygriggs.com](http://www.StanleyGriggs.com/), [@ST215](http://www.twitter.com/ST215). Issues and pull requests are welcome.
