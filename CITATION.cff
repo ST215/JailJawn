@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "Credit is appreciated but not required. If you cite this, here is how."
+title: "JailJawn: Philadelphia Department of Prisons daily census"
+type: dataset
+authors:
+  - family-names: Griggs
+    given-names: Stanley H. R.
+    name-suffix: II
+    alias: ST215
+repository-code: "https://github.com/ST215/JailJawn"
+url: "https://st215.github.io/JailJawn/"
+license: CC0-1.0
+date-released: 2026-09-09
+version: 2.3.0
+abstract: >-
+  A daily record of how many people the Philadelphia Department of Prisons holds,
+  collected from the city's daily census page since March 2025, with the project's
+  own record of 138 days between December 2013 and July 2017. The city does not
+  publish this data in its open data portal.
+keywords:
+  - philadelphia
+  - jail
+  - incarceration
+  - daily census
+  - open data

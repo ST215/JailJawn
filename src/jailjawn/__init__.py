@@ -1,6 +1,6 @@
 """JailJawn: collect the Philadelphia Department of Prisons daily census."""
 
-__version__ = "2.2.0"
+__version__ = "2.3.0"
 
 SOURCE_URL = (
     "https://www.phila.gov/departments/philadelphia-department-of-prisons/"

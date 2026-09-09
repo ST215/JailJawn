@@ -17,6 +17,7 @@ concurrency:
 permissions:
   contents: write
   actions: write # to redeploy the site after a data commit
+  issues: write # to open an issue when a run is refused
 
 jobs:
   scrape:
@@ -36,9 +37,18 @@ jobs:
         run: uv run playwright install --with-deps chromium
 
       - name: Scrape the census
+        id: scrape
         env:
           PYTHONUNBUFFERED: "1"
         run: uv run jailjawn scrape
+
+      # Ask the Internet Archive to keep its own copy of the city page, so
+      # the source survives independently of this repository. Best effort.
+      - name: Save the city page to the Wayback Machine
+        continue-on-error: true
+        run: |
+          curl -s -m 90 -o /dev/null -w "wayback: %{http_code}\n" \
+            "https://web.archive.org/save/https://www.phila.gov/departments/philadelphia-department-of-prisons/daily-headcount-and-census/"
 
       - name: Commit and push new census data
         run: |
@@ -62,3 +72,19 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run pages.yml --ref ${{ github.ref_name }}
+
+      # A refused or failed scrape opens one issue (not one per run) so the
+      # failure is visible somewhere other than the Actions tab.
+      - name: Open an issue if the scrape failed
+        if: failure() && steps.scrape.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          existing=$(gh issue list --label scrape-failure --state open --json number -q '.[0].number')
+          body="The scheduled scrape did not store a census. See the run log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "Failed again on $(date -u +%Y-%m-%d). $body"
+          else
+            gh label create scrape-failure --color d73a4a --description "The daily scrape did not store a census" 2>/dev/null || true
+            gh issue create --title "Scrape failed on $(date -u +%Y-%m-%d)" --label scrape-failure --body "$body"
+          fi

@@ -1,0 +1,36 @@
+# JailJawn
+
+> A daily record of how many people the Philadelphia Department of Prisons holds, collected from the city's census page since March 2025, plus the project's own record of 138 days between December 2013 and July 2017. Built and maintained by Stanley Griggs II (@ST215) as a non-profit civic project that began at a 2013 hackathon with the City of Philadelphia. The city does not publish this data in its open data portal; this is the only public history.
+
+The data is public domain (CC0 1.0): facts published by the city, collected here. Use it freely; no warranty. The code is MIT. Credit is appreciated but not required: "JailJawn by Stanley Griggs II, https://github.com/ST215/JailJawn", with a link to https://st215.github.io/JailJawn/ when you can.
+
+## Data files (stable URLs, updated daily around 12:30 UTC)
+
+- [census.csv](https://raw.githubusercontent.com/ST215/JailJawn/master/census.csv): one row per census day since 2025-03-06, 164 columns named `table.row.column`, e.g. `total_population.total.total`, `in_facility.cfcf.adult_males`, `facility_totals.rcf.total`. Empty cell = the city printed a dash (not zero).
+- [latest.json](https://st215.github.io/JailJawn/latest.json): the newest day's record with the five tables exactly as published.
+- [data/YYYY-MM-DD.json](https://github.com/ST215/JailJawn/tree/master/data): one JSON record per census day, same shape as latest.json.
+- [feed.json](https://st215.github.io/JailJawn/feed.json) and [feed.xml](https://st215.github.io/JailJawn/feed.xml): last 30 days, one entry per census day, with the total and changes.
+- [legacy/summary.csv](https://raw.githubusercontent.com/ST215/JailJawn/master/legacy/summary.csv): one row per day for the 2013–2017 record (different schema; facilities have changed).
+- [legacy/census-2013-2017.csv](https://raw.githubusercontent.com/ST215/JailJawn/master/legacy/census-2013-2017.csv): every row of the old census page per day, corrected.
+- [datapackage.json](https://st215.github.io/JailJawn/datapackage.json): Frictionless Data descriptor for all of the above.
+
+## Schema and method
+
+- [SCHEMA.md](https://github.com/ST215/JailJawn/blob/master/SCHEMA.md): every field, what null means, and which checks each record passed before being stored.
+- [legacy/README.md](https://github.com/ST215/JailJawn/blob/master/legacy/README.md): the 2013–2017 record, its quirks, and the column-shift correction.
+- Method: a scheduled job opens the city page in a headless browser twice a day, identifies each table by its exact header row, validates the date, rows, columns, and arithmetic, and commits the result. Days that fail are not stored. Arithmetic that does not close as published is kept with a `warnings` field.
+
+## Facilities
+
+Curran-Fromhold Correctional Facility (CFCF), Detention Center (DC), Detention Center Public Health Services Wing (DC PHSW), Philadelphia Industrial Correctional Center (PICC), Riverside Correctional Facility (RCF); plus Riverside's Alternative and Special Detention units and the Weekenders program. The 2013–2017 record also has the House of Correction (HOC), Community Education Centers (CEC), and several Alternative and Special Detention units that no longer appear.
+
+## Key facts as of the 2.2.0 release (compute from the files for current values)
+
+- 2013-12-21: 8,759 people. 2026-09-07: 3,261. Peak on record 8,759; low 3,161 (2026-08-07).
+- Sundays average about 48 more people than Wednesdays in the daily record.
+- Juveniles held in adult facilities: present on most days, up to 20 in the daily record and 44 in the 2013–2017 record.
+- Two people have been held in Lehigh County on every day of the daily record.
+
+## Contact
+
+Stanley Griggs II: https://github.com/ST215, http://www.StanleyGriggs.com/. Issues and pull requests at https://github.com/ST215/JailJawn.

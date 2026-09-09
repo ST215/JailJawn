@@ -70,6 +70,12 @@ python3 -m http.server 8000 --directory site
 - **1.1.0** fixed a timeout that had started failing the daily run.
 - **2.0.0** rewrote the parser, corrected a table-mapping bug present in every earlier file, re-parsed the full history from the saved pages, added validation, the CSV, tests, and the raw archive. The release notes carry the backfill report.
 
+## Using the data
+
+The data is public domain ([CC0](https://creativecommons.org/publicdomain/zero/1.0/)): figures the city published, collected here, offered as is with no warranty. The code is MIT. Credit is appreciated but not required: "JailJawn by Stanley Griggs II, github.com/ST215/JailJawn". See [LICENSE](LICENSE).
+
+For programs and people building on it: [`llms.txt`](https://st215.github.io/JailJawn/llms.txt) describes every file in one page, [`datapackage.json`](datapackage.json) is a Frictionless Data descriptor, [`CITATION.cff`](CITATION.cff) gives a citation, and the site carries schema.org Dataset markup. The daily record can be queried in a browser with [Datasette Lite](https://lite.datasette.io/?csv=https://raw.githubusercontent.com/ST215/JailJawn/master/census.csv).
+
 ## Contact and credits
 
 Stanley Griggs, [stanleygriggs.com](http://www.StanleyGriggs.com/), [@ST215](http://www.twitter.com/ST215). Issues and pull requests are welcome.

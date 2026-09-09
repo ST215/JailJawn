@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://st215.github.io/JailJawn/sitemap.xml

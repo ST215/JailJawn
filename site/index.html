@@ -8,6 +8,10 @@
 <meta name="color-scheme" content="dark">
 <meta property="og:title" content="JailJawn">
 <meta property="og:description" content="How many people Philadelphia holds in its jails, counted every day, with the record back to 2013.">
+<meta property="og:image" content="https://st215.github.io/JailJawn/og.png">
+<meta property="og:url" content="https://st215.github.io/JailJawn/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">
 <link rel="alternate" type="application/atom+xml" title="JailJawn census feed" href="./feed.xml">
 <link rel="alternate" type="application/feed+json" title="JailJawn census feed" href="./feed.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,6 +43,19 @@
     --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
     --body: "Public Sans", "Helvetica Neue", Arial, sans-serif;
     --mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
+  }
+  /* Wider gamut where the screen has it: the accent and the children's color reach further. */
+  @supports (color: color(display-p3 1 1 1)) {
+    :root {
+      --accent: color(display-p3 0.96 0.72 0.28);
+      --juv: color(display-p3 0.9 0.28 0.52);
+      --hosp: color(display-p3 0.05 0.64 0.44);
+      --trip: color(display-p3 0.9 0.36 0.14);
+      --away: color(display-p3 0.3 0.6 0.95);
+    }
+  }
+  @media (dynamic-range: high) {
+    :root { --juv: color(display-p3 1 0.25 0.55); --accent: color(display-p3 1 0.76 0.3); }
   }
   * { box-sizing: border-box; }
   html { background: var(--page); scroll-behavior: smooth; scroll-padding-top: 70px; }
@@ -146,6 +163,12 @@
   .tile .value small { font: 500 13px var(--body); color: var(--ink-3); letter-spacing: 0; margin-left: 4px; }
   .tile .foot { font-size: 12px; color: var(--ink-3); margin-top: 6px; }
 
+  .kids-section { border-top: 2px solid var(--juv); margin-top: 44px; }
+  .kids-section .eyebrow { color: var(--juv); }
+  .kids-h { font-size: clamp(30px, 4.6vw, 52px); max-width: 22ch; }
+  .kids-h em { font-style: normal; color: var(--juv); }
+  .btn.kids { border-color: var(--juv); color: var(--ink); }
+  .btn.kids[aria-pressed=true] { background: var(--juv); color: #fff; }
   .findings { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; margin-top: 22px; }
   .finding { background: var(--surface); border: 1px solid var(--grid); border-radius: 8px; padding: 16px 18px; }
   .finding .big { font-family: var(--display); font-weight: 700; font-size: 34px; line-height: 1; letter-spacing: -0.02em; margin-bottom: 8px; }
@@ -186,6 +209,7 @@
     <a class="brand" href="./">JailJawn</a>
     <button id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu <span aria-hidden="true">☰</span></button>
     <nav id="site-nav" aria-label="Sections">
+      <a href="#children">Children</a>
       <a href="#long">Since 2013</a>
       <a href="#trend">Daily</a>
       <a href="#facilities">Facilities</a>
@@ -225,6 +249,7 @@
           <button class="btn" data-speed="1" aria-pressed="true" type="button">1 month / sec</button>
           <button class="btn" data-speed="4" aria-pressed="false" type="button">4 months / sec</button>
           <button class="btn" data-speed="12" aria-pressed="false" type="button">1 year / sec</button>
+          <button class="btn kids" id="spot-kids" aria-pressed="false" type="button">Show the children</button>
         </div>
         <input id="day" type="range" min="0" max="0" value="0" aria-label="Census day on the timeline">
       </div>
@@ -248,6 +273,21 @@
       <div class="compare" id="compare"></div>
     </div>
     <div id="status"></div>
+  </section>
+
+  <section id="children" aria-labelledby="kids-h" class="kids-section">
+    <div class="eyebrow">Juveniles in adult facilities</div>
+    <h2 id="kids-h" class="kids-h">Loading…</h2>
+    <p class="lede" id="kids-lede"></p>
+    <div class="tiles" id="kids-facs"></div>
+    <div class="chart-card">
+      <h3>Children held in adult facilities, every day recorded</h3>
+      <div class="sub">The city's own count of juveniles in its adult facilities, as published. The 2013–2017 points come from the first scraper.</div>
+      <div class="how">Hover or tap for any day</div>
+      <div id="chart-kids"></div>
+      <div class="tip" id="tip-kids"></div>
+    </div>
+    <p class="lede" style="margin-top:16px">Press <strong>Show the children</strong> above the timeline to find them in the crowd.</p>
   </section>
 
   <section id="long" aria-labelledby="long-h">
@@ -315,7 +355,9 @@
   <section id="data" aria-labelledby="data-h">
     <h2 id="data-h">The data</h2>
     <p class="lede">Since March 2025: one CSV with a row per day and a JSON file per day with the five tables as the city published them, committed to a public repository the morning each is captured. From 2013 to 2017: the first scraper's record, cleaned and documented.</p>
-    <p><a href="https://github.com/ST215/JailJawn/blob/master/census.csv">census.csv</a> · <a href="https://github.com/ST215/JailJawn/blob/master/legacy/summary.csv">2013–2017 summary.csv</a> · <a href="https://github.com/ST215/JailJawn/blob/master/SCHEMA.md">Schema</a> · <a href="https://github.com/ST215/JailJawn/tree/master/data">Daily JSON</a></p>
+    <p><a href="https://github.com/ST215/JailJawn/blob/master/census.csv">census.csv</a> · <a href="https://github.com/ST215/JailJawn/blob/master/legacy/summary.csv">2013–2017 summary.csv</a> · <a href="https://github.com/ST215/JailJawn/blob/master/SCHEMA.md">Schema</a> · <a href="https://github.com/ST215/JailJawn/tree/master/data">Daily JSON</a> · <a href="./datapackage.json">Data package</a> · <a href="./llms.txt">llms.txt</a></p>
+    <p><a href="https://lite.datasette.io/?csv=https://raw.githubusercontent.com/ST215/JailJawn/master/census.csv">Query the daily record in your browser with Datasette Lite</a>, no install needed.</p>
+    <p class="lede" style="font-size:15px">The data is public domain (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>): it is what the city published, collected here, offered as is with no warranty. Do anything with it. A mention of <strong>JailJawn by Stanley Griggs II</strong> is appreciated, not required. The code is MIT. If you are a person or a program building on this, <code>llms.txt</code> and the data package describe every file, and <a href="https://github.com/ST215/JailJawn/blob/master/CITATION.cff">CITATION.cff</a> gives a citation.</p>
     <details class="table">
       <summary id="table-summary">The latest census as a table</summary>
       <div class="inner" id="table-inner"></div>
@@ -361,12 +403,33 @@
     </div>
     <div>
       <h3>Built with</h3>
-      <p>The crowd is laid out with <a href="https://github.com/chenglou/pretext">pretext</a> by Cheng Lou and drawn with <a href="https://fonts.google.com/icons">Material Symbols</a>. No framework, no build step.</p>
+      <p>The crowd is laid out with <a href="https://github.com/chenglou/pretext">pretext</a> by Cheng Lou and drawn with <a href="https://fonts.google.com/icons">Material Symbols</a>. No framework, no build step. Data public domain (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>), code MIT, no warranties. A non-profit civic project by <a href="https://github.com/ST215">Stanley Griggs II</a>.</p>
     </div>
   </div>
 </footer>
 
 <button id="totop" type="button" aria-label="Back to top" title="Back to top">↑</button>
+<script type="application/ld+json" id="ld-dataset">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "JailJawn: Philadelphia Department of Prisons daily census",
+  "description": "How many people the Philadelphia Department of Prisons holds, counted every day since March 2025 from the city's daily census page, plus 138 days between December 2013 and July 2017. The city does not publish this data in its open data portal.",
+  "url": "https://st215.github.io/JailJawn/",
+  "sameAs": "https://github.com/ST215/JailJawn",
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "isAccessibleForFree": true,
+  "creator": { "@type": "Person", "name": "Stanley Griggs II", "url": "https://github.com/ST215" },
+  "keywords": ["Philadelphia", "jail", "incarceration", "daily census", "open data"],
+  "spatialCoverage": { "@type": "Place", "name": "Philadelphia, Pennsylvania, United States" },
+  "temporalCoverage": "2013-12-21/..",
+  "distribution": [
+    { "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://raw.githubusercontent.com/ST215/JailJawn/master/census.csv", "name": "Daily census since 2025" },
+    { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://st215.github.io/JailJawn/latest.json", "name": "Latest day" },
+    { "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://raw.githubusercontent.com/ST215/JailJawn/master/legacy/summary.csv", "name": "2013 to 2017 record" }
+  ]
+}
+</script>
 <script type="module" src="./app.js"></script>
 </body>
 </html>

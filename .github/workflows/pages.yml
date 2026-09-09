@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir -p _site/legacy
           cp -r site/. _site/
-          cp census.csv feed.xml feed.json latest.json _site/
+          cp census.csv feed.xml feed.json latest.json datapackage.json _site/
           cp legacy/summary.csv _site/legacy/summary.csv
 
       - uses: actions/configure-pages@v5

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://st215.github.io/JailJawn/</loc><changefreq>daily</changefreq></url>
+  <url><loc>https://st215.github.io/JailJawn/llms.txt</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://st215.github.io/JailJawn/datapackage.json</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://st215.github.io/JailJawn/latest.json</loc><changefreq>daily</changefreq></url>
+  <url><loc>https://st215.github.io/JailJawn/feed.json</loc><changefreq>daily</changefreq></url>
+  <url><loc>https://st215.github.io/JailJawn/feed.xml</loc><changefreq>daily</changefreq></url>
+  <url><loc>https://st215.github.io/JailJawn/census.csv</loc><changefreq>daily</changefreq></url>
+</urlset>
