@@ -6,6 +6,20 @@
   "description": "How many people the Philadelphia Department of Prisons held each day.",
   "items": [
     {
+      "id": "https://st215.github.io/JailJawn/#2026-09-12",
+      "url": "https://st215.github.io/JailJawn/#2026-09-12",
+      "title": "Saturday, September 12, 2026: 3,204 people",
+      "content_text": "Total: 3,204 people (2,968 men, 236 women)\n+16 since the day before\n-311 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,428\nDetention Center (DC): 335\nDetention Center Public Health Services Wing (DC PHSW): 52\nPhiladelphia Industrial Correctional Center (PICC): 810\nRiverside Correctional Facility (RCF): 409\nHeld by other jurisdictions: 170",
+      "date_published": "2026-09-12T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-09-12",
+        "total": 3204,
+        "captured": "2026-09-13T15:27:04+00:00",
+        "change_from_previous_day": 16,
+        "change_from_year_before": -311
+      }
+    },
+    {
       "id": "https://st215.github.io/JailJawn/#2026-09-11",
       "url": "https://st215.github.io/JailJawn/#2026-09-11",
       "title": "Friday, September 11, 2026: 3,188 people",
@@ -408,20 +422,6 @@
         "captured": "2026-08-15T12:24:15",
         "change_from_previous_day": -10,
         "change_from_year_before": -204
-      }
-    },
-    {
-      "id": "https://st215.github.io/JailJawn/#2026-08-13",
-      "url": "https://st215.github.io/JailJawn/#2026-08-13",
-      "title": "Thursday, August 13, 2026: 3,200 people",
-      "content_text": "Total: 3,200 people (2,975 men, 225 women)\n+16 since the day before\n-168 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,430\nDetention Center (DC): 329\nDetention Center Public Health Services Wing (DC PHSW): 47\nPhiladelphia Industrial Correctional Center (PICC): 830\nRiverside Correctional Facility (RCF): 404\nRiverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1\nHeld by other jurisdictions: 159",
-      "date_published": "2026-08-13T00:00:00Z",
-      "_jailjawn": {
-        "census_date": "2026-08-13",
-        "total": 3200,
-        "captured": "2026-08-14T12:51:17",
-        "change_from_previous_day": 16,
-        "change_from_year_before": -168
       }
     }
   ]
