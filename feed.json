@@ -6,6 +6,20 @@
   "description": "How many people the Philadelphia Department of Prisons held each day.",
   "items": [
     {
+      "id": "https://st215.github.io/JailJawn/#2026-09-14",
+      "url": "https://st215.github.io/JailJawn/#2026-09-14",
+      "title": "Monday, September 14, 2026: 3,219 people",
+      "content_text": "Total: 3,219 people (2,972 men, 247 women)\n-10 since the day before\n-360 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,443\nDetention Center (DC): 339\nDetention Center Public Health Services Wing (DC PHSW): 50\nPhiladelphia Industrial Correctional Center (PICC): 818\nRiverside Correctional Facility (RCF): 400\nHeld by other jurisdictions: 169",
+      "date_published": "2026-09-14T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-09-14",
+        "total": 3219,
+        "captured": "2026-09-15T16:02:27+00:00",
+        "change_from_previous_day": -10,
+        "change_from_year_before": -360
+      }
+    },
+    {
       "id": "https://st215.github.io/JailJawn/#2026-09-13",
       "url": "https://st215.github.io/JailJawn/#2026-09-13",
       "title": "Sunday, September 13, 2026: 3,229 people",
@@ -409,19 +423,6 @@
         "captured": "2026-08-17T12:30:31",
         "change_from_previous_day": 22,
         "change_from_year_before": -208
-      }
-    },
-    {
-      "id": "https://st215.github.io/JailJawn/#2026-08-15",
-      "url": "https://st215.github.io/JailJawn/#2026-08-15",
-      "title": "Saturday, August 15, 2026: 3,211 people",
-      "content_text": "Total: 3,211 people (2,985 men, 226 women)\n+21 since the day before\nCurran-Fromhold Correctional Facility (CFCF): 1,436\nDetention Center (DC): 332\nDetention Center Public Health Services Wing (DC PHSW): 50\nPhiladelphia Industrial Correctional Center (PICC): 827\nRiverside Correctional Facility (RCF): 407\nWeekenders: 1\nHeld by other jurisdictions: 158",
-      "date_published": "2026-08-15T00:00:00Z",
-      "_jailjawn": {
-        "census_date": "2026-08-15",
-        "total": 3211,
-        "captured": "2026-08-16T12:25:45",
-        "change_from_previous_day": 21
       }
     }
   ]
