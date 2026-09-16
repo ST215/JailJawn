@@ -6,6 +6,20 @@
   "description": "How many people the Philadelphia Department of Prisons held each day.",
   "items": [
     {
+      "id": "https://st215.github.io/JailJawn/#2026-09-15",
+      "url": "https://st215.github.io/JailJawn/#2026-09-15",
+      "title": "Tuesday, September 15, 2026: 3,200 people",
+      "content_text": "Total: 3,200 people (2,954 men, 246 women)\n-19 since the day before\n-352 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,436\nDetention Center (DC): 328\nDetention Center Public Health Services Wing (DC PHSW): 49\nPhiladelphia Industrial Correctional Center (PICC): 817\nRiverside Correctional Facility (RCF): 398\nHeld by other jurisdictions: 172",
+      "date_published": "2026-09-15T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-09-15",
+        "total": 3200,
+        "captured": "2026-09-16T15:56:03+00:00",
+        "change_from_previous_day": -19,
+        "change_from_year_before": -352
+      }
+    },
+    {
       "id": "https://st215.github.io/JailJawn/#2026-09-14",
       "url": "https://st215.github.io/JailJawn/#2026-09-14",
       "title": "Monday, September 14, 2026: 3,219 people",
@@ -409,20 +423,6 @@
         "captured": "2026-08-18T12:32:25",
         "change_from_previous_day": -23,
         "change_from_year_before": -250
-      }
-    },
-    {
-      "id": "https://st215.github.io/JailJawn/#2026-08-16",
-      "url": "https://st215.github.io/JailJawn/#2026-08-16",
-      "title": "Sunday, August 16, 2026: 3,233 people",
-      "content_text": "Total: 3,233 people (3,001 men, 232 women)\n+22 since the day before\n-208 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,435\nDetention Center (DC): 342\nDetention Center Public Health Services Wing (DC PHSW): 54\nPhiladelphia Industrial Correctional Center (PICC): 834\nRiverside Correctional Facility (RCF): 410\nHeld by other jurisdictions: 158",
-      "date_published": "2026-08-16T00:00:00Z",
-      "_jailjawn": {
-        "census_date": "2026-08-16",
-        "total": 3233,
-        "captured": "2026-08-17T12:30:31",
-        "change_from_previous_day": 22,
-        "change_from_year_before": -208
       }
     }
   ]
