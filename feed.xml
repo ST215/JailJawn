@@ -4,9 +4,17 @@
   <link href="https://st215.github.io/JailJawn/"/>
   <link rel="self" href="https://st215.github.io/JailJawn/feed.xml"/>
   <id>https://st215.github.io/JailJawn/</id>
-  <updated>2026-09-25T16:18:42Z</updated>
+  <updated>2026-09-26T15:32:20Z</updated>
   <author><name>JailJawn</name></author>
   <subtitle>How many people the Philadelphia Department of Prisons held each day.</subtitle>
+  <entry>
+    <title>Friday, September 25, 2026: 3,135 people</title>
+    <link href="https://st215.github.io/JailJawn/#2026-09-25"/>
+    <id>https://st215.github.io/JailJawn/#2026-09-25</id>
+    <published>2026-09-25T00:00:00Z</published>
+    <updated>2026-09-25T00:00:00Z</updated>
+    <summary>Total: 3,135 people (2,888 men, 247 women). -15 since the day before. -408 compared with the same date a year earlier. Curran-Fromhold Correctional Facility (CFCF): 1,417. Detention Center (DC): 265. Detention Center Public Health Services Wing (DC PHSW): 43. Philadelphia Industrial Correctional Center (PICC): 842. Riverside Correctional Facility (RCF): 399. Riverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1. Held by other jurisdictions: 168</summary>
+  </entry>
   <entry>
     <title>Thursday, September 24, 2026: 3,150 people</title>
     <link href="https://st215.github.io/JailJawn/#2026-09-24"/>
@@ -238,13 +246,5 @@
     <published>2026-08-27T00:00:00Z</published>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary>Total: 3,176 people (2,948 men, 228 women). -13 since the day before. -252 compared with the same date a year earlier. Curran-Fromhold Correctional Facility (CFCF): 1,404. Detention Center (DC): 343. Detention Center Public Health Services Wing (DC PHSW): 43. Philadelphia Industrial Correctional Center (PICC): 826. Riverside Correctional Facility (RCF): 393. Held by other jurisdictions: 167</summary>
-  </entry>
-  <entry>
-    <title>Wednesday, August 26, 2026: 3,189 people</title>
-    <link href="https://st215.github.io/JailJawn/#2026-08-26"/>
-    <id>https://st215.github.io/JailJawn/#2026-08-26</id>
-    <published>2026-08-26T00:00:00Z</published>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary>Total: 3,189 people (2,958 men, 231 women). +6 since the day before. -238 compared with the same date a year earlier. Curran-Fromhold Correctional Facility (CFCF): 1,418. Detention Center (DC): 336. Detention Center Public Health Services Wing (DC PHSW): 38. Philadelphia Industrial Correctional Center (PICC): 836. Riverside Correctional Facility (RCF): 394. Held by other jurisdictions: 167</summary>
   </entry>
 </feed>
