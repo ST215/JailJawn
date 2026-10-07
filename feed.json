@@ -6,6 +6,20 @@
   "description": "How many people the Philadelphia Department of Prisons held each day.",
   "items": [
     {
+      "id": "https://st215.github.io/JailJawn/#2026-10-06",
+      "url": "https://st215.github.io/JailJawn/#2026-10-06",
+      "title": "Tuesday, October 6, 2026: 3,115 people",
+      "content_text": "Total: 3,115 people (2,880 men, 235 women)\n-10 since the day before\n-444 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,419\nDetention Center (DC): 243\nDetention Center Public Health Services Wing (DC PHSW): 50\nPhiladelphia Industrial Correctional Center (PICC): 839\nRiverside Correctional Facility (RCF): 389\nRiverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1\nHeld by other jurisdictions: 174",
+      "date_published": "2026-10-06T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-10-06",
+        "total": 3115,
+        "captured": "2026-10-07T18:16:41+00:00",
+        "change_from_previous_day": -10,
+        "change_from_year_before": -444
+      }
+    },
+    {
       "id": "https://st215.github.io/JailJawn/#2026-10-05",
       "url": "https://st215.github.io/JailJawn/#2026-10-05",
       "title": "Monday, October 5, 2026: 3,125 people",
@@ -409,20 +423,6 @@
         "captured": "2026-09-09T02:14:33",
         "change_from_previous_day": 18,
         "change_from_year_before": -275
-      }
-    },
-    {
-      "id": "https://st215.github.io/JailJawn/#2026-09-06",
-      "url": "https://st215.github.io/JailJawn/#2026-09-06",
-      "title": "Sunday, September 6, 2026: 3,243 people",
-      "content_text": "Total: 3,243 people (3,013 men, 230 women)\n+17 since the day before\n-267 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,431\nDetention Center (DC): 359\nDetention Center Public Health Services Wing (DC PHSW): 51\nPhiladelphia Industrial Correctional Center (PICC): 826\nRiverside Correctional Facility (RCF): 408\nHeld by other jurisdictions: 168",
-      "date_published": "2026-09-06T00:00:00Z",
-      "_jailjawn": {
-        "census_date": "2026-09-06",
-        "total": 3243,
-        "captured": "2026-09-07T17:02:14",
-        "change_from_previous_day": 17,
-        "change_from_year_before": -267
       }
     }
   ]
