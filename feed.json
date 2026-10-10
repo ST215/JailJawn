@@ -6,6 +6,20 @@
   "description": "How many people the Philadelphia Department of Prisons held each day.",
   "items": [
     {
+      "id": "https://st215.github.io/JailJawn/#2026-10-09",
+      "url": "https://st215.github.io/JailJawn/#2026-10-09",
+      "title": "Friday, October 9, 2026: 3,088 people",
+      "content_text": "Total: 3,088 people (2,860 men, 228 women)\n-2 since the day before\n-413 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,411\nDetention Center (DC): 236\nDetention Center Public Health Services Wing (DC PHSW): 50\nPhiladelphia Industrial Correctional Center (PICC): 822\nRiverside Correctional Facility (RCF): 391\nRiverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1\nWeekenders: 1\nHeld by other jurisdictions: 176",
+      "date_published": "2026-10-09T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-10-09",
+        "total": 3088,
+        "captured": "2026-10-10T16:46:41+00:00",
+        "change_from_previous_day": -2,
+        "change_from_year_before": -413
+      }
+    },
+    {
       "id": "https://st215.github.io/JailJawn/#2026-10-08",
       "url": "https://st215.github.io/JailJawn/#2026-10-08",
       "title": "Thursday, October 8, 2026: 3,090 people",
@@ -409,20 +423,6 @@
         "captured": "2026-09-11T15:41:32+00:00",
         "change_from_previous_day": -9,
         "change_from_year_before": -338
-      }
-    },
-    {
-      "id": "https://st215.github.io/JailJawn/#2026-09-09",
-      "url": "https://st215.github.io/JailJawn/#2026-09-09",
-      "title": "Wednesday, September 9, 2026: 3,192 people",
-      "content_text": "Total: 3,192 people (2,958 men, 234 women)\n-44 since the day before\n-329 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,398\nDetention Center (DC): 354\nDetention Center Public Health Services Wing (DC PHSW): 45\nPhiladelphia Industrial Correctional Center (PICC): 830\nRiverside Correctional Facility (RCF): 395\nHeld by other jurisdictions: 170",
-      "date_published": "2026-09-09T00:00:00Z",
-      "_jailjawn": {
-        "census_date": "2026-09-09",
-        "total": 3192,
-        "captured": "2026-09-10T15:39:54+00:00",
-        "change_from_previous_day": -44,
-        "change_from_year_before": -329
       }
     }
   ]
