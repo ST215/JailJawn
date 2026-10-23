@@ -1,42 +1,42 @@
 {
   "schema_version": 2,
-  "timestamp": "2026-10-22T16:26:43+00:00",
-  "scrape_date": "2026-10-22",
-  "census_date": "2026-10-21",
+  "timestamp": "2026-10-23T16:15:38+00:00",
+  "scrape_date": "2026-10-23",
+  "census_date": "2026-10-22",
   "source_url": "https://www.phila.gov/departments/philadelphia-department-of-prisons/daily-headcount-and-census/",
   "facilities": {
     "in_facility": [
       {
         "Facility": "Curran-Fromhold Correctional Facility (CFCF)",
-        "Adult males": 1370,
+        "Adult males": 1369,
         "Adult females": null,
         "Juvenile males": null,
         "Juvenile females": null
       },
       {
         "Facility": "Detention Center (DC)",
-        "Adult males": 238,
+        "Adult males": 240,
         "Adult females": null,
         "Juvenile males": null,
         "Juvenile females": null
       },
       {
         "Facility": "Detention Center Public Health Services Wing (DC PHSW)",
-        "Adult males": 39,
+        "Adult males": 34,
         "Adult females": 4,
         "Juvenile males": null,
         "Juvenile females": null
       },
       {
         "Facility": "Philadelphia Industrial Correctional Center (PICC)",
-        "Adult males": 614,
-        "Adult females": 222,
+        "Adult males": 607,
+        "Adult females": 225,
         "Juvenile males": null,
         "Juvenile females": null
       },
       {
         "Facility": "Riverside Correctional Facility (RCF)",
-        "Adult males": 389,
+        "Adult males": 396,
         "Adult females": null,
         "Juvenile males": null,
         "Juvenile females": null
@@ -64,8 +64,8 @@
       },
       {
         "Facility": "In facility headcount total",
-        "Adult males": 2650,
-        "Adult females": 226,
+        "Adult males": 2646,
+        "Adult females": 229,
         "Juvenile males": null,
         "Juvenile females": null
       }
@@ -77,9 +77,9 @@
         "Female workers": null,
         "Male furlough": null,
         "Female furlough": null,
-        "Male open ward": 2,
+        "Male open ward": 3,
         "Female open ward": null,
-        "Male emergency trips": 1,
+        "Male emergency trips": 2,
         "Female emergency trips": null
       },
       {
@@ -101,7 +101,7 @@
         "Female furlough": null,
         "Male open ward": 2,
         "Female open ward": null,
-        "Male emergency trips": null,
+        "Male emergency trips": 2,
         "Female emergency trips": null
       },
       {
@@ -112,8 +112,8 @@
         "Female furlough": null,
         "Male open ward": null,
         "Female open ward": 1,
-        "Male emergency trips": null,
-        "Female emergency trips": 1
+        "Male emergency trips": 1,
+        "Female emergency trips": null
       },
       {
         "Facility": "Riverside Correctional Facility (RCF)",
@@ -165,42 +165,42 @@
         "Female workers": null,
         "Male furlough": null,
         "Female furlough": null,
-        "Male open ward": 4,
+        "Male open ward": 5,
         "Female open ward": 1,
-        "Male emergency trips": 1,
-        "Female emergency trips": 1
+        "Male emergency trips": 5,
+        "Female emergency trips": null
       }
     ],
     "facility_totals": [
       {
         "Facility": "Curran-Fromhold Correctional Facility (CFCF)",
-        "Males": 1373,
+        "Males": 1374,
         "Females": null,
-        "Total": 1373
+        "Total": 1374
       },
       {
         "Facility": "Detention Center (DC)",
-        "Males": 238,
+        "Males": 240,
         "Females": null,
-        "Total": 238
+        "Total": 240
       },
       {
         "Facility": "Detention Center Public Health Services Wing (DC PHSW)",
-        "Males": 41,
+        "Males": 38,
         "Females": 4,
-        "Total": 45
+        "Total": 42
       },
       {
         "Facility": "Philadelphia Industrial Correctional Center (PICC)",
-        "Males": 614,
-        "Females": 224,
-        "Total": 838
+        "Males": 608,
+        "Females": 226,
+        "Total": 834
       },
       {
         "Facility": "Riverside Correctional Facility (RCF)",
-        "Males": 389,
+        "Males": 396,
         "Females": null,
-        "Total": 389
+        "Total": 396
       },
       {
         "Facility": "Riverside Correctional Facility Alternative and Special Detention Central Unit (RCF ASDCU)",
@@ -222,9 +222,9 @@
       },
       {
         "Facility": "In facility headcount and temporarily not in facility total",
-        "Males": 2655,
-        "Females": 228,
-        "Total": 2883
+        "Males": 2656,
+        "Females": 230,
+        "Total": 2886
       }
     ],
     "other_jurisdictions": [
@@ -254,35 +254,35 @@
       },
       {
         "Jurisdiction": "All other jurisdictions",
-        "Males": 174,
+        "Males": 175,
         "Females": 1,
-        "Total": 175
+        "Total": 176
       },
       {
         "Jurisdiction": "Total",
-        "Males": 178,
+        "Males": 179,
         "Females": 1,
-        "Total": 179
+        "Total": 180
       }
     ],
     "total_population": [
       {
         "Category": "PDP in facility headcount and temporarily not in facility total",
-        "Males": 2655,
-        "Females": 228,
-        "Total": 2883
+        "Males": 2656,
+        "Females": 230,
+        "Total": 2886
       },
       {
         "Category": "Total PDP incarcerated people held in other jurisdictions",
-        "Males": 178,
+        "Males": 179,
         "Females": 1,
-        "Total": 179
+        "Total": 180
       },
       {
         "Category": "Total",
-        "Males": 2833,
-        "Females": 229,
-        "Total": 3062
+        "Males": 2835,
+        "Females": 231,
+        "Total": 3066
       }
     ]
   }
