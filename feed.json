@@ -6,6 +6,20 @@
   "description": "How many people the Philadelphia Department of Prisons held each day.",
   "items": [
     {
+      "id": "https://st215.github.io/JailJawn/#2026-11-15",
+      "url": "https://st215.github.io/JailJawn/#2026-11-15",
+      "title": "Sunday, November 15, 2026: 3,096 people",
+      "content_text": "Total: 3,096 people (2,864 men, 232 women)\n+20 since the day before\n-624 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,401\nDetention Center (DC): 254\nDetention Center Public Health Services Wing (DC PHSW): 50\nPhiladelphia Industrial Correctional Center (PICC): 749\nRiverside Correctional Facility (RCF): 453\nHeld by other jurisdictions: 189",
+      "date_published": "2026-11-15T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-11-15",
+        "total": 3096,
+        "captured": "2026-11-16T21:30:20+00:00",
+        "change_from_previous_day": 20,
+        "change_from_year_before": -624
+      }
+    },
+    {
       "id": "https://st215.github.io/JailJawn/#2026-11-14",
       "url": "https://st215.github.io/JailJawn/#2026-11-14",
       "title": "Saturday, November 14, 2026: 3,076 people",
@@ -408,20 +422,6 @@
         "captured": "2026-10-18T15:13:06+00:00",
         "change_from_previous_day": 28,
         "change_from_year_before": -408
-      }
-    },
-    {
-      "id": "https://st215.github.io/JailJawn/#2026-10-16",
-      "url": "https://st215.github.io/JailJawn/#2026-10-16",
-      "title": "Friday, October 16, 2026: 3,091 people",
-      "content_text": "Total: 3,091 people (2,854 men, 237 women)\n-19 since the day before\n-436 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,413\nDetention Center (DC): 237\nDetention Center Public Health Services Wing (DC PHSW): 42\nPhiladelphia Industrial Correctional Center (PICC): 831\nRiverside Correctional Facility (RCF): 386\nRiverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1\nWeekenders: 1\nHeld by other jurisdictions: 180",
-      "date_published": "2026-10-16T00:00:00Z",
-      "_jailjawn": {
-        "census_date": "2026-10-16",
-        "total": 3091,
-        "captured": "2026-10-17T14:47:53+00:00",
-        "change_from_previous_day": -19,
-        "change_from_year_before": -436
       }
     }
   ]
