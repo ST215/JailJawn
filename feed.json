@@ -6,6 +6,20 @@
   "description": "How many people the Philadelphia Department of Prisons held each day.",
   "items": [
     {
+      "id": "https://st215.github.io/JailJawn/#2026-11-18",
+      "url": "https://st215.github.io/JailJawn/#2026-11-18",
+      "title": "Wednesday, November 18, 2026: 3,084 people",
+      "content_text": "Total: 3,084 people (2,858 men, 226 women)\n-7 since the day before\n-593 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,393\nDetention Center (DC): 259\nDetention Center Public Health Services Wing (DC PHSW): 44\nPhiladelphia Industrial Correctional Center (PICC): 740\nRiverside Correctional Facility (RCF): 444\nHeld by other jurisdictions: 204\nNote: the published figures did not add up on this day.",
+      "date_published": "2026-11-18T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-11-18",
+        "total": 3084,
+        "captured": "2026-11-19T19:50:44+00:00",
+        "change_from_previous_day": -7,
+        "change_from_year_before": -593
+      }
+    },
+    {
       "id": "https://st215.github.io/JailJawn/#2026-11-17",
       "url": "https://st215.github.io/JailJawn/#2026-11-17",
       "title": "Tuesday, November 17, 2026: 3,091 people",
@@ -408,20 +422,6 @@
         "captured": "2026-10-21T16:26:09+00:00",
         "change_from_previous_day": -35,
         "change_from_year_before": -505
-      }
-    },
-    {
-      "id": "https://st215.github.io/JailJawn/#2026-10-19",
-      "url": "https://st215.github.io/JailJawn/#2026-10-19",
-      "title": "Monday, October 19, 2026: 3,096 people",
-      "content_text": "Total: 3,096 people (2,863 men, 233 women)\n-35 since the day before\n-470 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,406\nDetention Center (DC): 234\nDetention Center Public Health Services Wing (DC PHSW): 49\nPhiladelphia Industrial Correctional Center (PICC): 844\nRiverside Correctional Facility (RCF): 385\nRiverside Correctional Facility Alternative and Special Detention Modular Unit (RCF ASDMOD3): 1\nHeld by other jurisdictions: 177",
-      "date_published": "2026-10-19T00:00:00Z",
-      "_jailjawn": {
-        "census_date": "2026-10-19",
-        "total": 3096,
-        "captured": "2026-10-20T16:10:28+00:00",
-        "change_from_previous_day": -35,
-        "change_from_year_before": -470
       }
     }
   ]
