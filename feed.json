@@ -6,6 +6,20 @@
   "description": "How many people the Philadelphia Department of Prisons held each day.",
   "items": [
     {
+      "id": "https://st215.github.io/JailJawn/#2026-11-22",
+      "url": "https://st215.github.io/JailJawn/#2026-11-22",
+      "title": "Sunday, November 22, 2026: 3,117 people",
+      "content_text": "Total: 3,117 people (2,893 men, 224 women)\n+25 since the day before\n-562 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,418\nDetention Center (DC): 262\nDetention Center Public Health Services Wing (DC PHSW): 44\nPhiladelphia Industrial Correctional Center (PICC): 753\nRiverside Correctional Facility (RCF): 447\nHeld by other jurisdictions: 205\nNote: the published figures did not add up on this day.",
+      "date_published": "2026-11-22T00:00:00Z",
+      "_jailjawn": {
+        "census_date": "2026-11-22",
+        "total": 3117,
+        "captured": "2026-11-23T23:12:33+00:00",
+        "change_from_previous_day": 25,
+        "change_from_year_before": -562
+      }
+    },
+    {
       "id": "https://st215.github.io/JailJawn/#2026-11-21",
       "url": "https://st215.github.io/JailJawn/#2026-11-21",
       "title": "Saturday, November 21, 2026: 3,092 people",
@@ -408,20 +422,6 @@
         "captured": "2026-10-25T15:23:32+00:00",
         "change_from_previous_day": 24,
         "change_from_year_before": -475
-      }
-    },
-    {
-      "id": "https://st215.github.io/JailJawn/#2026-10-23",
-      "url": "https://st215.github.io/JailJawn/#2026-10-23",
-      "title": "Friday, October 23, 2026: 3,066 people",
-      "content_text": "Total: 3,066 people (2,839 men, 227 women)\n+0 since the day before\n-478 compared with the same date a year earlier\nCurran-Fromhold Correctional Facility (CFCF): 1,391\nDetention Center (DC): 234\nDetention Center Public Health Services Wing (DC PHSW): 45\nPhiladelphia Industrial Correctional Center (PICC): 821\nRiverside Correctional Facility (RCF): 393\nHeld by other jurisdictions: 182",
-      "date_published": "2026-10-23T00:00:00Z",
-      "_jailjawn": {
-        "census_date": "2026-10-23",
-        "total": 3066,
-        "captured": "2026-10-24T15:13:12+00:00",
-        "change_from_previous_day": 0,
-        "change_from_year_before": -478
       }
     }
   ]

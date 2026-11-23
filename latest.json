@@ -1,42 +1,42 @@
 {
   "schema_version": 2,
-  "timestamp": "2026-11-22T18:55:52+00:00",
-  "scrape_date": "2026-11-22",
-  "census_date": "2026-11-21",
+  "timestamp": "2026-11-23T23:12:33+00:00",
+  "scrape_date": "2026-11-23",
+  "census_date": "2026-11-22",
   "source_url": "https://www.phila.gov/departments/philadelphia-department-of-prisons/daily-headcount-and-census/",
   "facilities": {
     "in_facility": [
       {
         "Facility": "Curran-Fromhold Correctional Facility (CFCF)",
-        "Adult males": 1404,
+        "Adult males": 1412,
         "Adult females": null,
         "Juvenile males": null,
         "Juvenile females": null
       },
       {
         "Facility": "Detention Center (DC)",
-        "Adult males": 258,
+        "Adult males": 262,
         "Adult females": null,
         "Juvenile males": null,
         "Juvenile females": null
       },
       {
         "Facility": "Detention Center Public Health Services Wing (DC PHSW)",
-        "Adult males": 34,
+        "Adult males": 36,
         "Adult females": 4,
         "Juvenile males": null,
         "Juvenile females": null
       },
       {
         "Facility": "Philadelphia Industrial Correctional Center (PICC)",
-        "Adult males": 529,
+        "Adult males": 539,
         "Adult females": 210,
         "Juvenile males": null,
         "Juvenile females": null
       },
       {
         "Facility": "Riverside Correctional Facility (RCF)",
-        "Adult males": 446,
+        "Adult males": 445,
         "Adult females": null,
         "Juvenile males": null,
         "Juvenile females": null
@@ -64,7 +64,7 @@
       },
       {
         "Facility": "In facility headcount total",
-        "Adult males": 2671,
+        "Adult males": 2694,
         "Adult females": 214,
         "Juvenile males": null,
         "Juvenile females": null
@@ -77,18 +77,18 @@
         "Female workers": null,
         "Male furlough": null,
         "Female furlough": null,
-        "Male open ward": 5,
+        "Male open ward": 4,
         "Female open ward": null,
-        "Male emergency trips": 1,
+        "Male emergency trips": 2,
         "Female emergency trips": null
       },
       {
         "Facility": "Detention Center (DC)",
         "Male workers": null,
         "Female workers": null,
-        "Male furlough": 1,
+        "Male furlough": null,
         "Female furlough": null,
-        "Male open ward": 1,
+        "Male open ward": null,
         "Female open ward": null,
         "Male emergency trips": null,
         "Female emergency trips": null
@@ -101,7 +101,7 @@
         "Female furlough": null,
         "Male open ward": 3,
         "Female open ward": null,
-        "Male emergency trips": null,
+        "Male emergency trips": 1,
         "Female emergency trips": null
       },
       {
@@ -111,7 +111,7 @@
         "Male furlough": null,
         "Female furlough": null,
         "Male open ward": null,
-        "Female open ward": 2,
+        "Female open ward": 4,
         "Male emergency trips": null,
         "Female emergency trips": null
       },
@@ -123,7 +123,7 @@
         "Female furlough": null,
         "Male open ward": 1,
         "Female open ward": null,
-        "Male emergency trips": null,
+        "Male emergency trips": 1,
         "Female emergency trips": null
       },
       {
@@ -163,38 +163,38 @@
         "Facility": "Temporarily not in facility total",
         "Male workers": null,
         "Female workers": null,
-        "Male furlough": 1,
+        "Male furlough": null,
         "Female furlough": null,
-        "Male open ward": 10,
-        "Female open ward": 2,
-        "Male emergency trips": 1,
+        "Male open ward": 8,
+        "Female open ward": 4,
+        "Male emergency trips": 4,
         "Female emergency trips": null
       }
     ],
     "facility_totals": [
       {
         "Facility": "Curran-Fromhold Correctional Facility (CFCF)",
-        "Males": 1410,
+        "Males": 1418,
         "Females": null,
-        "Total": 1410
+        "Total": 1418
       },
       {
         "Facility": "Detention Center (DC)",
-        "Males": 260,
+        "Males": 262,
         "Females": null,
-        "Total": 260
+        "Total": 262
       },
       {
         "Facility": "Detention Center Public Health Services Wing (DC PHSW)",
-        "Males": 37,
+        "Males": 40,
         "Females": 4,
-        "Total": 41
+        "Total": 44
       },
       {
         "Facility": "Philadelphia Industrial Correctional Center (PICC)",
-        "Males": 529,
-        "Females": 212,
-        "Total": 741
+        "Males": 539,
+        "Females": 214,
+        "Total": 753
       },
       {
         "Facility": "Riverside Correctional Facility (RCF)",
@@ -222,9 +222,9 @@
       },
       {
         "Facility": "In facility headcount and temporarily not in facility total",
-        "Males": 2683,
-        "Females": 216,
-        "Total": 2899
+        "Males": 2706,
+        "Females": 218,
+        "Total": 2924
       }
     ],
     "other_jurisdictions": [
@@ -268,9 +268,9 @@
     "total_population": [
       {
         "Category": "PDP in facility headcount and temporarily not in facility total",
-        "Males": 2683,
-        "Females": 216,
-        "Total": 2899
+        "Males": 2706,
+        "Females": 218,
+        "Total": 2924
       },
       {
         "Category": "Total PDP incarcerated people held in other jurisdictions",
@@ -280,9 +280,9 @@
       },
       {
         "Category": "Total",
-        "Males": 2870,
-        "Females": 222,
-        "Total": 3092
+        "Males": 2893,
+        "Females": 224,
+        "Total": 3117
       }
     ]
   },
@@ -290,8 +290,8 @@
     "sum_mismatch: other_jurisdictions: Males rows sum to 187, total row says 197",
     "sum_mismatch: other_jurisdictions: Females rows sum to 6, total row says 8",
     "sum_mismatch: other_jurisdictions: Total rows sum to 193, total row says 205",
-    "sum_mismatch: total_population: Males rows sum to 2880, total row says 2870",
-    "sum_mismatch: total_population: Females rows sum to 224, total row says 222",
-    "sum_mismatch: total_population: Total rows sum to 3104, total row says 3092"
+    "sum_mismatch: total_population: Males rows sum to 2903, total row says 2893",
+    "sum_mismatch: total_population: Females rows sum to 226, total row says 224",
+    "sum_mismatch: total_population: Total rows sum to 3129, total row says 3117"
   ]
 }
